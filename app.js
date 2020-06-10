@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const user = require('./models/user'); 
+const historytransfers = require('./models/history-of-transfers'); 
 const bodyParser = require('body-parser'); 
 const sequelize = require('./utils/database');
 const authRoute = require('./routes/auth.js');
@@ -26,6 +28,9 @@ app.use((error,req,res,next)=>{//error handling
     message: message
   });
 });
+
+user.hasMany(historytransfers);
+historytransfers.belongsTo(user); 
 
 sequelize
 .sync()
