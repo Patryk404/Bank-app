@@ -11,6 +11,10 @@
 # production
 /build
 
+# eject
+config
+scripts
+
 # misc
 .DS_Store
 .env.local
