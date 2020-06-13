@@ -6,7 +6,7 @@ function App() {
   return (
     <div className={classes.App}>
       <Layout>
-        <div style={{fontSize: "30px",fontWeight: '2px'}}>
+        <div style={{fontSize: "30px"}}>
           Hi welcome in our bank!
           <br/>
           Come on look at your money!

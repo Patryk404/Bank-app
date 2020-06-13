@@ -12,8 +12,8 @@
 /build
 
 # eject
-config
-scripts
+/config
+/scripts
 
 # misc
 .DS_Store
