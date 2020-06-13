@@ -1,0 +1,10 @@
+.Login{ 
+    text-align: center;
+    width: 40%;
+    display: inline-block;
+}
+
+.Login Button { 
+    width: unset;
+    background-color: red;
+}
