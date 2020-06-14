@@ -1,0 +1,9 @@
+.Maketransfer {
+    text-align: center;
+    width: 40%;
+    display: inline-block;
+}
+
+.Maketransfer Button {
+    width: unset;
+}

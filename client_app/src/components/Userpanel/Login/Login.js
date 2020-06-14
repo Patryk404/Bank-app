@@ -7,15 +7,15 @@ const login = (props)=>{//onSubmit={handleSubmit}
             <div className={classes.Login}>
                 <label>
                         Mail:
-                        <input type="text" name="email" onChange={props.change}/>
+                        <input type="text" name="email" onChange={props.change} value={props.user.email}/>
                 </label>
                 <label>
                         Login:
-                        <input type="text" name="login" onChange={props.change}/>
+                        <input type="text" name="login" onChange={props.change} value={props.user.login}/>
                 </label>
                 <label>
                         Password:
-                        <input type="password" name="password" onChange={props.change}/>
+                        <input type="password" name="password" onChange={props.change} value={props.user.password}/>
                 </label>
                 <Button click={props.submit}>Login</Button>
                 <br/>

@@ -3,6 +3,7 @@ import Button from '../UI/Button/Button';
 import Login from '../Userpanel/Login/Login';
 import Modal from '../UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
+import MakeTransfer from '../Userpanel/Maketransfer/Maketransfer';
 import axios from 'axios';
 import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
@@ -19,8 +20,39 @@ class Userpanel extends Component {
         logged: false,
         loggedUser: {
             transfers: []
-        }
+        },
+        showMakeTransfer: false,
+        bill_to_transfer: '',
+        cash_to_transfer: 0,
+        message_after_transfer: '',
+        error_while_transfer: false
     };
+    componentDidUpdate(){
+        if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='')
+        {
+            axios.get('http://localhost:3000/user/history',{headers:{
+                "Authorization": 'Bearer '+localStorage.token
+            }})
+            .then(response=>{
+                const history = response.data.transfers;
+                const history2 = history.map(element=>{
+                    const new_date = element.date.replace('T',' Time: ').split('.')[0];
+                    return {
+                        cash: element.cash,
+                        date: new_date
+                    }
+                })
+                this.setState({
+                    loggedUser: {
+                        transfers: history2
+                    },
+                    cash_to_transfer: 1
+                });
+            }).catch(err=>{
+                console.log(err);
+            })
+        }
+    }
     componentDidMount(){
         if (this.state.loggedUser.transfers.length === 0 && localStorage.token)
         {
@@ -29,7 +61,6 @@ class Userpanel extends Component {
             }})
             .then(response=>{
                 const history = response.data.transfers;
-                console.log(history);
                 const history2 = history.map(element=>{
                     const new_date = element.date.replace('T',' Time: ').split('.')[0];
                     return {
@@ -47,13 +78,41 @@ class Userpanel extends Component {
             })
         }
     }
-    handleChange = (event)=>{
+
+    handleChangePanel = (event)=>{
+        this.setState({
+            [event.target.name]: event.target.value
+        });
+    }
+    handleChangeLogin = (event)=>{
         this.setState({
             user:{
                 ...this.state.user,
                 [event.target.name]: event.target.value
             }
         });
+    }
+    submitTransferButtonHandler=()=>{
+        axios.post('http://localhost:3000/user/transfer',{
+            bill: this.state.bill_to_transfer,
+            cash: this.state.cash_to_transfer
+        },{headers: {"Authorization": 'Bearer '+localStorage.token}})
+        .then(response=>{
+            this.setState({
+                bill_to_transfer: '',
+                cash_to_transfer: 0,
+                message_after_transfer: response.data.message
+            });
+        }).catch(err=>{
+            console.log(err);
+            this.setState({
+                error_while_transfer: true
+            });
+        })
+    }
+    makeTransferButtonHandler=()=>{
+        this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) :
+        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});
     }
     loginButtonHandler =()=>{
         this.state.showlogin ? this.setState({showlogin: false}) :
@@ -63,6 +122,10 @@ class Userpanel extends Component {
         this.state.showsignup ? this.setState({showsignup: false}) :
         this.setState({showsignup: true});
     };
+    logoutButtonHandler =()=>{
+        localStorage.removeItem('token');
+        this.refreshPage();
+    }
     submitLoginHandler = ()=>{
         console.log(this.state.user);
         axios.post('http://localhost:3000/login',this.state.user)
@@ -78,6 +141,23 @@ class Userpanel extends Component {
             });
         })
     }
+    validateBill = (evt)=>{
+        let theEvent = evt || window.event;
+        let key;
+        // Handle paste
+        if (theEvent.type === 'paste') {
+           key = evt.clipboardData.getData('text/plain');
+        } else {
+        // Handle key press
+            key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }
+        let regex = /[0-9]|\./;
+        if( !regex.test(key) ) {
+          theEvent.returnValue = false;
+          if(theEvent.preventDefault) theEvent.preventDefault();
+        }
+    }
     refreshPage = ()=>{
         window.location.reload(false);
     }
@@ -86,6 +166,7 @@ class Userpanel extends Component {
         if (this.state.logged === true)
         {
             userPanel = (<Aux>
+                <Button click={this.loginButtonHandler}>Login</Button>
                 <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
                     <p>Succesfully logged into bank</p>
                     <Button click={this.refreshPage}>TAKE ME TO PANEL</Button>
@@ -100,14 +181,17 @@ class Userpanel extends Component {
                     <div style={{position: 'absolute',
                     width: '100%',
                     top: '200px'}}>
-                    <Button>Make Transfer</Button>
+                    <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
+                    <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
+                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer}/>
+                    </Modal>
                     </div>
-                    <div style={{position: 'absolute',// please change this soon 
+                    <div style={{position: 'fixed',// please change this soon 
                     width: '75%',
                     top: '0px',
-                    right: '-450px',
+                    left: '800px',
                     textAlign: 'none'}}>
-                    <Button styled={'red'}>Log Out</Button>
+                    <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                     </div>
                     <HistoryTransfers history={this.state.loggedUser.transfers}/>
                 </Aux>
@@ -118,7 +202,7 @@ class Userpanel extends Component {
         userPanel = (<Aux>
             <Button click={this.loginButtonHandler}>Log in</Button>
             <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
-                <Login submit={this.submitLoginHandler} change={this.handleChange} message={this.state.message}/>
+                <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>
             </Modal>
             <Button click={this.signupButtonHandler}>Register</Button>
             <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
@@ -129,7 +213,7 @@ class Userpanel extends Component {
         userPanel = (<Aux>
             <Button click={this.loginButtonHandler}>Log in</Button>
             <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
-            <Login submit={this.submitLoginHandler} change={this.handleChange} error={"Something went wrong"}/>
+            <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={"Something went wrong"}/>
             </Modal>
                 <Button click={this.signupButtonHandler}>Register</Button>
             <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
