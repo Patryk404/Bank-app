@@ -57,6 +57,23 @@ class Userpanel extends Component {
                 });
             }).catch(err=>{
                 console.log(err);
+            });
+            axios.get('http://localhost:3000/user',{headers:{
+                "Authorization": 'Bearer '+localStorage.token
+            }})
+            .then(response=>{
+                const data = response.data;
+                this.setState({
+                    user_logged:{
+                        name: data.name,
+                        surname: data.surname,
+                        cash: parseInt(data.cash),
+                        bill: data.bill
+                    }
+                });
+            })
+            .catch(err=>{
+                console.log(err);
             })
         }
     }
@@ -83,6 +100,23 @@ class Userpanel extends Component {
             }).catch(err=>{
                 console.log(err);
             });
+            axios.get('http://localhost:3000/user',{headers:{
+                "Authorization": 'Bearer '+localStorage.token
+            }})
+            .then(response=>{
+                const data = response.data;
+                this.setState({
+                    user_logged:{
+                        name: data.name,
+                        surname: data.surname,
+                        cash: parseInt(data.cash),
+                        bill: data.bill
+                    }
+                });
+            })
+            .catch(err=>{
+                console.log(err);
+            })
         }
     }
 
@@ -201,7 +235,7 @@ class Userpanel extends Component {
                     <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                     </div>
                     <HistoryTransfers history={this.state.loggedUser.transfers}/>
-                    <Informations/>
+                    <Informations user={this.state.user_logged}/>
                 </Aux>
             );
         }
