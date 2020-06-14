@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import Button from '../UI/Button/Button';
-import Login from '../Userpanel/Login/Login';
+import Login from './Login/Login';
 import Modal from '../UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
-import MakeTransfer from '../Userpanel/Maketransfer/Maketransfer';
-import Informations from '../Userpanel/Informations/Informations';
+import MakeTransfer from './Maketransfer/Maketransfer';
+import Informations from './Informations/Informations';
+import Signup from './Signup/Signup';
 import axios from 'axios';
 import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
@@ -17,7 +18,15 @@ class Userpanel extends Component {
             login: '',
             password: ''
         },
+        register_user: {
+            email: '',
+            name: '',
+            surname: '',
+            login: '',
+            password: ''
+        },
         error: '',
+        message: '',
         logged: false,
         loggedUser: {
             transfers: []
@@ -133,6 +142,14 @@ class Userpanel extends Component {
             }
         });
     }
+    handleChangeSignup = (event)=> {
+        this.setState({
+            register_user: {
+                ...this.state.register_user,
+                [event.target.name]: event.target.value
+            }
+        });
+    };
     submitTransferButtonHandler=()=>{
         axios.post('http://localhost:3000/user/transfer',{
             bill: this.state.bill_to_transfer,
@@ -162,14 +179,41 @@ class Userpanel extends Component {
     };
     signupButtonHandler =()=>{
         this.state.showsignup ? this.setState({showsignup: false}) :
-        this.setState({showsignup: true});
+        this.setState({showsignup: true, message: ''});
     };
     logoutButtonHandler =()=>{
         localStorage.removeItem('token');
         this.refreshPage();
     }
+    submitSignupHandler = ()=>{
+        axios.post('http://localhost:3000/signup',this.state.register_user)
+        .then(response=>{
+            this.setState({
+                message: response.data.message,
+                register_user: {
+                    email: '',
+                    name: '',
+                    surname: '',
+                    login: '',
+                    password: ''
+                }
+            });
+        })
+        .catch(err=>{
+            console.log(err);
+            this.setState({
+                message: 'Something wrong please write correct informations',
+                register_user: {
+                    email: '',
+                    name: '',
+                    surname: '',
+                    login: '',
+                    password: ''
+                }
+            });
+        })
+    }
     submitLoginHandler = ()=>{
-        console.log(this.state.user);
         axios.post('http://localhost:3000/login',this.state.user)
         .then(response=>{
             localStorage.token = response.data.token;
@@ -248,6 +292,7 @@ class Userpanel extends Component {
             </Modal>
             <Button click={this.signupButtonHandler}>Register</Button>
             <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
+                <Signup submit={this.submitSignupHandler} message={this.state.message} change={this.handleChangeSignup} user={this.state.register_user}/>
             </Modal>
         </Aux>);
         }
@@ -259,6 +304,7 @@ class Userpanel extends Component {
             </Modal>
                 <Button click={this.signupButtonHandler}>Register</Button>
             <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
+                <Signup message={this.state.message} submit={this.submitSignupHandler} change={this.handleChangeSignup} user={this.state.register_user}/>
             </Modal>
         </Aux>);
         }

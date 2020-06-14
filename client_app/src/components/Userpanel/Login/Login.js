@@ -2,7 +2,7 @@ import React from 'react'
 import classes from './Login.module.css';
 import Button from '../../UI/Button/Button';
 
-const login = (props)=>{//onSubmit={handleSubmit} 
+const login = (props)=>{
         return (
             <div className={classes.Login}>
                 <label>

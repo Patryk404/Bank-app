@@ -1,0 +1,10 @@
+.Signup{
+    text-align: center;
+    width: 40%;
+    display: inline-block;
+}
+
+.Signup button {
+    width: unset;
+    background-color: red;
+}
