@@ -15,7 +15,7 @@ class Userpanel extends Component {
             password: ''
         },
         error: '',
-        message: ''
+        logged: false
     };
 
     handleChange = (event)=>{
@@ -38,8 +38,9 @@ class Userpanel extends Component {
         console.log(this.state.user);
         axios.post('http://localhost:3000/login',this.state.user)
         .then(response=>{
+            localStorage.token = response.data.token;
             this.setState({
-                message: response.data.message
+                logged: true
             });
         })
         .catch(err=>{
@@ -48,9 +49,41 @@ class Userpanel extends Component {
             });
         })
     }
+    refreshPage = ()=>{
+        window.location.reload(false);
+    }
     render(){
         let userPanel;
-        if (this.state.error==='')
+        if (this.state.logged === true)
+        {
+            userPanel = (<Aux>
+                <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
+                    <p>Succesfully logged into bank</p>
+                    <Button click={this.refreshPage}>TAKE ME TO PANEL</Button>
+                </Modal>
+            </Aux>);
+        } 
+        else if (localStorage.token)
+        {
+            userPanel=(
+                <Aux>
+                    <h1 style={{fontWeight: 'normal'}}>PANEL</h1>
+                    <div style={{position: 'absolute',
+                    width: '100%',
+                    top: '200px'}}>
+                    <Button>Make Transfer</Button>
+                    </div>
+                    <div style={{position: 'absolute',
+                    width: '75%',
+                    top: '20px',
+                    left: '500px',
+                    textAlign: 'none'}}>
+                    <Button style={'red'}>Log Out</Button>
+                    </div>
+                </Aux>
+            );
+        }
+        else if (this.state.error==='' && this.state.logged===false)
         {
         userPanel = (<Aux>
             <Button click={this.loginButtonHandler}>Log in</Button>
@@ -64,14 +97,14 @@ class Userpanel extends Component {
         }
         else {
         userPanel = (<Aux>
-        <Button click={this.loginButtonHandler}>Log in</Button>
-        <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
+            <Button click={this.loginButtonHandler}>Log in</Button>
+            <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
             <Login submit={this.submitLoginHandler} change={this.handleChange} error={"Something went wrong"}/>
-        </Modal>
-        <Button click={this.signupButtonHandler}>Register</Button>
-        <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
-        </Modal>
-    </Aux>);
+            </Modal>
+                <Button click={this.signupButtonHandler}>Register</Button>
+            <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
+            </Modal>
+        </Aux>);
         }
         return(
             userPanel

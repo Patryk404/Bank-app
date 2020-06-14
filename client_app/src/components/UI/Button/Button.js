@@ -1,8 +1,14 @@
 import React from 'react';
 import classes from './Button.module.css';
 const button = (props)=>{
+    let style = [];
+    style.push(classes.Button);
+    if (props.style==='red')
+    {
+        style.push(classes.Red);
+    }
     return(
-    <button className={classes.Button} onClick={props.click}>{props.children}</button>
+    <button className={style.join(' ')} onClick={props.click}>{props.children}</button>
     );
 }
 

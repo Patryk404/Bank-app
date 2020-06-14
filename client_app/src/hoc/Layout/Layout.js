@@ -4,7 +4,7 @@ import Aux from '../Auxiliary/Auxiliary';
 const layout = (props)=>{
     return(
         <Aux>
-            <Logo />
+            <Logo logged={props.logged}/>
             {props.children}
         </Aux>
     );

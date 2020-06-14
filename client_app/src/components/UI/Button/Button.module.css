@@ -13,6 +13,11 @@
     width: 20%;
 }
 
+.Red {
+    background: red;
+    border-radius: 10px;
+}
+
 .Button:hover { 
     text-shadow: 0px 0px 6px rgba(255, 255, 255, 1);
     -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);

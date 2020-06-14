@@ -2,6 +2,20 @@
     background-color: inherit;
     padding: 8px;
     height: 73%;
+    position: relative;
+}
+
+.Logo_logged{ 
+    background-color: inherit;
+    padding: 8px;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.Logo_logged img {
+    width: 100px;
+    height: 100px;
 }
 
 .Logo img{
