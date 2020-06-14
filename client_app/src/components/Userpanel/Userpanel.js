@@ -4,6 +4,7 @@ import Login from '../Userpanel/Login/Login';
 import Modal from '../UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import axios from 'axios';
+import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
 class Userpanel extends Component { 
     state = {
@@ -15,9 +16,37 @@ class Userpanel extends Component {
             password: ''
         },
         error: '',
-        logged: false
+        logged: false,
+        loggedUser: {
+            transfers: []
+        }
     };
-
+    componentDidMount(){
+        if (this.state.loggedUser.transfers.length === 0 && localStorage.token)
+        {
+            axios.get('http://localhost:3000/user/history',{headers:{
+                "Authorization": 'Bearer '+localStorage.token
+            }})
+            .then(response=>{
+                const history = response.data.transfers;
+                console.log(history);
+                const history2 = history.map(element=>{
+                    const new_date = element.date.replace('T',' Time: ').split('.')[0];
+                    return {
+                        cash: element.cash,
+                        date: new_date
+                    }
+                })
+                this.setState({
+                    loggedUser: {
+                        transfers: history2
+                    }
+                });
+            }).catch(err=>{
+                console.log(err);
+            })
+        }
+    }
     handleChange = (event)=>{
         this.setState({
             user:{
@@ -67,19 +96,20 @@ class Userpanel extends Component {
         {
             userPanel=(
                 <Aux>
-                    <h1 style={{fontWeight: 'normal'}}>PANEL</h1>
+                    <h1 style={{fontWeight: 'normal'}}>Panel</h1>
                     <div style={{position: 'absolute',
                     width: '100%',
                     top: '200px'}}>
                     <Button>Make Transfer</Button>
                     </div>
-                    <div style={{position: 'absolute',
+                    <div style={{position: 'absolute',// please change this soon 
                     width: '75%',
-                    top: '20px',
-                    left: '500px',
+                    top: '0px',
+                    right: '-450px',
                     textAlign: 'none'}}>
-                    <Button style={'red'}>Log Out</Button>
+                    <Button styled={'red'}>Log Out</Button>
                     </div>
+                    <HistoryTransfers history={this.state.loggedUser.transfers}/>
                 </Aux>
             );
         }
