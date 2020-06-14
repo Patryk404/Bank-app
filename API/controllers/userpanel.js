@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const HistoryTransfers = require('../models/history-of-transfers');
 module.exports.make_transfer = async (req,res,next)=>{
-    const cash = req.body.cash;
+    const cash = parseInt(req.body.cash);
     const bill_to_transfer = req.body.bill;
     const user = await User.findOne({where: {id: req.userId}});
     if (user.cash<=cash)
@@ -60,5 +60,21 @@ module.exports.get_history = async (req,res,next)=>{
     //filtering data 
     res.status(200).json({
         transfers: transfers_to_send
+    });
+};
+
+module.exports.get_user = async (req,res,next)=>{
+    const user = await User.findOne({where: {id: req.userId}});
+    if (!user){
+        const error = new Error();
+        error.message = "We can't find this user, sorry";
+        error.statusCode = 500;
+        return next(error);
+    }
+    res.status(200).json({
+        name: user.dataValues.name,
+        surname: user.dataValues.surname,
+        cash: user.dataValues.cash,
+        bill: user.dataValues.bill, 
     });
 };

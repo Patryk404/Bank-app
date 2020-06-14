@@ -7,4 +7,6 @@ router.post('/transfer',isAuth,UserpanelController.make_transfer);
 
 router.get('/history',isAuth,UserpanelController.get_history);
 
+router.get('/',isAuth,UserpanelController.get_user);
+
 module.exports = router;

@@ -1,0 +1,15 @@
+.Informations {
+    position: fixed;
+    bottom:  300px;
+    left: 500px;
+    display: inline-block;
+    text-align: center;
+    background-color: #ABFFFF;
+    border: 1px solid black;
+    width: 50%;
+}
+
+.Informations ul {
+    list-style-type: none;
+    display: inline;
+}

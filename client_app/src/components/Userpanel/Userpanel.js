@@ -4,6 +4,7 @@ import Login from '../Userpanel/Login/Login';
 import Modal from '../UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import MakeTransfer from '../Userpanel/Maketransfer/Maketransfer';
+import Informations from '../Userpanel/Informations/Informations';
 import axios from 'axios';
 import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
@@ -25,7 +26,13 @@ class Userpanel extends Component {
         bill_to_transfer: '',
         cash_to_transfer: 0,
         message_after_transfer: '',
-        error_while_transfer: false
+        error_while_transfer: false,
+        user_logged: { 
+            name: '',
+            surname: '',
+            cash: 0,
+            bill: ''
+        }
     };
     componentDidUpdate(){
         if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='')
@@ -75,7 +82,7 @@ class Userpanel extends Component {
                 });
             }).catch(err=>{
                 console.log(err);
-            })
+            });
         }
     }
 
@@ -96,7 +103,8 @@ class Userpanel extends Component {
         axios.post('http://localhost:3000/user/transfer',{
             bill: this.state.bill_to_transfer,
             cash: this.state.cash_to_transfer
-        },{headers: {"Authorization": 'Bearer '+localStorage.token}})
+        },{headers: {"Authorization": 'Bearer '+localStorage.token,
+            'Content-Type': 'application/json'}})
         .then(response=>{
             this.setState({
                 bill_to_transfer: '',
@@ -151,8 +159,7 @@ class Userpanel extends Component {
         // Handle key press
             key = theEvent.keyCode || theEvent.which;
             key = String.fromCharCode(key);
-        }
-        let regex = /[0-9]|\./;
+        }        let regex = /[0-9]|\./;
         if( !regex.test(key) ) {
           theEvent.returnValue = false;
           if(theEvent.preventDefault) theEvent.preventDefault();
@@ -194,6 +201,7 @@ class Userpanel extends Component {
                     <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                     </div>
                     <HistoryTransfers history={this.state.loggedUser.transfers}/>
+                    <Informations/>
                 </Aux>
             );
         }
