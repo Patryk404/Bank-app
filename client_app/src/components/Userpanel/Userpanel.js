@@ -9,29 +9,29 @@ import Signup from './Signup/Signup';
 import axios from 'axios';
 import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
-class Userpanel extends Component { 
-    state = {
-        showlogin: false,
-        showsignup: false,
-        user: {
+class Userpanel extends Component { // UserPanel component which is containter 
+    state = { // state 
+        showlogin: false,//to show login modal
+        showsignup: false,//to show signup modal
+        user: {//this is when we get informations from login modal
             email: '',
             login: '',
             password: ''
         },
-        register_user: {
+        register_user: {//this is when we get informations from signup modal
             email: '',
             name: '',
             surname: '',
             login: '',
             password: ''
         },
-        error: '',
-        message: '',
-        logged: false,
-        loggedUser: {
+        error: '',//possible error
+        message: '',//possible message
+        logged: false,//if we logged 
+        loggedUser: {//our logged user history of transfers
             transfers: []
         },
-        showMakeTransfer: false,
+        showMakeTransfer: false,//showing modal maketransfer
         bill_to_transfer: '',
         cash_to_transfer: 0,
         message_after_transfer: '',
@@ -44,35 +44,35 @@ class Userpanel extends Component {
         }
     };
     componentDidUpdate(){
-        if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='')
+        if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
         {
-            axios.get('http://localhost:3000/user/history',{headers:{
+            axios.get('http://localhost:3000/user/history',{headers:{//geting history of transfer from specific user
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
-                const history = response.data.transfers;
-                const history2 = history.map(element=>{
-                    const new_date = element.date.replace('T',' Time: ').split('.')[0];
+                const history = response.data.transfers;//this transfers when we getting from API
+                const history2 = history.map(element=>{// transform data
+                    const new_date = element.date.replace('T',' Time: ').split('.')[0];//transform string
                     return {
                         cash: element.cash,
                         date: new_date
-                    }
+                    }//return object and giving it into array
                 })
                 this.setState({
                     loggedUser: {
                         transfers: history2
                     },
-                    cash_to_transfer: 1
+                    cash_to_transfer: 1 //this is also to avoid infinite loop
                 });
             }).catch(err=>{
                 console.log(err);
             });
-            axios.get('http://localhost:3000/user',{headers:{
+            axios.get('http://localhost:3000/user',{headers:{//getting information about user from API
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
                 const data = response.data;
-                this.setState({
+                this.setState({//setting state 
                     user_logged:{
                         name: data.name,
                         surname: data.surname,
@@ -86,10 +86,10 @@ class Userpanel extends Component {
             })
         }
     }
-    componentDidMount(){
-        if (this.state.loggedUser.transfers.length === 0 && localStorage.token)
+    componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
+        if (this.state.loggedUser.transfers.length === 0 && localStorage.token)// avoiding unneccessary mounting
         {
-            axios.get('http://localhost:3000/user/history',{headers:{
+            axios.get('http://localhost:3000/user/history',{headers:{//functions is the same like up 
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
@@ -129,12 +129,12 @@ class Userpanel extends Component {
         }
     }
 
-    handleChangePanel = (event)=>{
+    handleChangePanel = (event)=>{//handling in make_transfer form
         this.setState({
             [event.target.name]: event.target.value
         });
     }
-    handleChangeLogin = (event)=>{
+    handleChangeLogin = (event)=>{//handling in login form
         this.setState({
             user:{
                 ...this.state.user,
@@ -142,7 +142,7 @@ class Userpanel extends Component {
             }
         });
     }
-    handleChangeSignup = (event)=> {
+    handleChangeSignup = (event)=> {//handling in signup form
         this.setState({
             register_user: {
                 ...this.state.register_user,
@@ -150,44 +150,44 @@ class Userpanel extends Component {
             }
         });
     };
-    submitTransferButtonHandler=()=>{
+    submitTransferButtonHandler=()=>{//sending request to our api Post with our token
         axios.post('http://localhost:3000/user/transfer',{
-            bill: this.state.bill_to_transfer,
+            bill: this.state.bill_to_transfer,//post body
             cash: this.state.cash_to_transfer
-        },{headers: {"Authorization": 'Bearer '+localStorage.token,
+        },{headers: {"Authorization": 'Bearer '+localStorage.token,// our token to authentication
             'Content-Type': 'application/json'}})
-        .then(response=>{
+        .then(response=>{//response getting
             this.setState({
-                bill_to_transfer: '',
+                bill_to_transfer: '',//set state to default before we make_transfer
                 cash_to_transfer: 0,
                 message_after_transfer: response.data.message
             });
         }).catch(err=>{
             console.log(err);
-            this.setState({
+            this.setState({// if we have error setting error state
                 error_while_transfer: true
             });
         })
     }
     makeTransferButtonHandler=()=>{
-        this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) :
-        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});
+        this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) : //special syntax to show make_transfer component
+        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});//setting state to default and showing modal with make_transfer component
     }
     loginButtonHandler =()=>{
         this.state.showlogin ? this.setState({showlogin: false}) :
-        this.setState({showlogin: true});
+        this.setState({showlogin: true});// to show login modal
     };
     signupButtonHandler =()=>{
         this.state.showsignup ? this.setState({showsignup: false}) :
-        this.setState({showsignup: true, message: ''});
+        this.setState({showsignup: true, message: ''});// to show signup modal
     };
     logoutButtonHandler =()=>{
-        localStorage.removeItem('token');
-        this.refreshPage();
+        localStorage.removeItem('token');//removing token from our storage
+        this.refreshPage();//refreshing page 
     }
-    submitSignupHandler = ()=>{
-        axios.post('http://localhost:3000/signup',this.state.register_user)
-        .then(response=>{
+    submitSignupHandler = () =>{ //submit our signup
+        axios.post('http://localhost:3000/signup',this.state.register_user)//passing our body which represents this.state.register_user
+        .then(response=>{//setting state to default if we register user
             this.setState({
                 message: response.data.message,
                 register_user: {
@@ -201,7 +201,7 @@ class Userpanel extends Component {
         })
         .catch(err=>{
             console.log(err);
-            this.setState({
+            this.setState({//setting default state and message 
                 message: 'Something wrong please write correct informations',
                 register_user: {
                     email: '',
@@ -213,21 +213,21 @@ class Userpanel extends Component {
             });
         })
     }
-    submitLoginHandler = ()=>{
+    submitLoginHandler = ()=>{// sending post request to login into system
         axios.post('http://localhost:3000/login',this.state.user)
         .then(response=>{
-            localStorage.token = response.data.token;
+            localStorage.token = response.data.token;//seting token in our app storage
             this.setState({
                 logged: true
             });
         })
-        .catch(err=>{
+        .catch(err=>{//if we passed wrong informations we setting error
             this.setState({
                 error: err
             });
         })
     }
-    validateBill = (evt)=>{
+    validateBill = (evt)=>{//stackoverflow... to validate if we writing only numbers in our input this is called in our Modal with make_transfer component
         let theEvent = evt || window.event;
         let key;
         // Handle paste
@@ -243,12 +243,12 @@ class Userpanel extends Component {
           if(theEvent.preventDefault) theEvent.preventDefault();
         }
     }
-    refreshPage = ()=>{
-        window.location.reload(false);
+    refreshPage = ()=>{//special function to reload page. We simply called this function when we logged into system and logout also
+        window.location.reload(false);//refresh page
     }
     render(){
-        let userPanel;
-        if (this.state.logged === true)
+        let userPanel;//variable to take our panel
+        if (this.state.logged === true)//if we logged we rendering special modal to take a customer into panel when we after a click on button refresh page
         {
             userPanel = (<Aux>
                 <Button click={this.loginButtonHandler}>Login</Button>
@@ -258,7 +258,7 @@ class Userpanel extends Component {
                 </Modal>
             </Aux>);
         } 
-        else if (localStorage.token)
+        else if (localStorage.token)//if we have token we rendering panel with our history of transfers and information about user
         {
             userPanel=(
                 <Aux>
@@ -283,7 +283,7 @@ class Userpanel extends Component {
                 </Aux>
             );
         }
-        else if (this.state.error==='' && this.state.logged===false)
+        else if (this.state.error==='' && this.state.logged===false)// This is rendering normal if we get site first time
         {
         userPanel = (<Aux>
             <Button click={this.loginButtonHandler}>Log in</Button>
@@ -296,7 +296,7 @@ class Userpanel extends Component {
             </Modal>
         </Aux>);
         }
-        else {
+        else {//this render when we get error in login 
         userPanel = (<Aux>
             <Button click={this.loginButtonHandler}>Log in</Button>
             <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
@@ -308,10 +308,12 @@ class Userpanel extends Component {
             </Modal>
         </Aux>);
         }
-        return(
+        return(//simply returning this variable
             userPanel
         );
     }
 }
 
 export default Userpanel;
+
+//This code required refactoring we might create new container component if we logged into system. Not setting all this information in one container component

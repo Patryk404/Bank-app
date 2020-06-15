@@ -3,7 +3,7 @@ import classes from './App.module.css';
 import UserPanel from './components/Userpanel/Userpanel';
 import Layout from './hoc/Layout/Layout';
 function App() {
-  if (localStorage.token===undefined)
+  if (localStorage.token===undefined)//if our token is not defined
   {
     return (
       <div className={classes.App}>
@@ -18,7 +18,7 @@ function App() {
       </div>
     );
   }
-  else {
+  else {//if we are logged into system
     return (
       <div className={classes.App}>
         <Layout logged={true}>
