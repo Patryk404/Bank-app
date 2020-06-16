@@ -2,12 +2,12 @@ const express = require('express');
 const app = express();
 const user = require('./models/user'); 
 const historytransfers = require('./models/history-of-transfers'); 
-const bodyParser = require('body-parser'); 
+const bodyParser = require('body-parser'); //parsing to json 
 const sequelize = require('./utils/database');
 const authRoute = require('./routes/auth.js');
 const userpanelRoute = require('./routes/userpanel');
-app.use(bodyParser.json());
-app.use((req, res, next) => {
+app.use(bodyParser.json());//this must be if we want to work for json's files 
+app.use((req, res, next) => {//cors policy
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
       'Access-Control-Allow-Methods',
@@ -17,7 +17,8 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use(authRoute);
+app.use(authRoute);// '/'
+
 app.use('/user',userpanelRoute);
 
 app.use((error,req,res,next)=>{//error handling
@@ -29,10 +30,10 @@ app.use((error,req,res,next)=>{//error handling
   });
 });
 
-user.hasMany(historytransfers);
+user.hasMany(historytransfers);//relations between user and history of transfer model 
 historytransfers.belongsTo(user); 
 
-sequelize
+sequelize//our database connect
 .sync()
 .then(()=>{
     app.listen(3000);
