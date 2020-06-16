@@ -8,8 +8,8 @@ const modal = (props)=> {
             <Backdrop show={props.show} click={props.clickonbackdrop}/>
             <div className={classes.Modal}
                 style={{
-                    transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
-                    opacity: props.show ? '1' : '0'
+                    transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',//animtion if our props show is true or not 
+                    opacity: props.show ? '1' : '0' // visibility 
                }}>
                {props.children}
             </div>

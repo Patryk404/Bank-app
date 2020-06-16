@@ -3,7 +3,7 @@ import classes from './Button.module.css';
 const button = (props)=>{
     let style = [];
     style.push(classes.Button);
-    if (props.styled==='red')
+    if (props.styled==='red')// it shouldn't be here 
     {
         style.push(classes.Red);
     }

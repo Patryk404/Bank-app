@@ -4,7 +4,7 @@ import HistoryTransfer from './HistoryTransfer/HistoryTransfer';
 import Aux from '../../../hoc/Auxiliary/Auxiliary';
 const historyTransfers = (props)=>{
     const transfers = props.history.map(
-        (element,index)=>{
+        (element,index)=>{// setting list with appropriate key
             return (
             <HistoryTransfer key={index}>{element}</HistoryTransfer>
             );

@@ -3,7 +3,7 @@ import classes from './Signup.module.css';
 import Button from '../../UI/Button/Button';
 
 const signup = (props)=>{
-        if (!props.message)
+        if (!props.message)// if our message is empty 
         {
         return(
                 <div className={classes.Signup}>
