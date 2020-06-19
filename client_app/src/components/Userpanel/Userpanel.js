@@ -1,48 +1,29 @@
-import React, {Component} from 'react';
-import Button from '../UI/Button/Button';
-import Login from './Login/Login';
-import Modal from '../UI/Modal/Modal';
+import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
+import Button from '../UI/Button/Button';
+import Modal from '../UI/Modal/Modal';
 import MakeTransfer from './Maketransfer/Maketransfer';
+import HistoryTransfers from './HistoryTransfers/HistoryTransfers';
 import Informations from './Informations/Informations';
-import Signup from './Signup/Signup';
+import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
-import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
 
-class Userpanel extends Component { // UserPanel component which is containter 
-    state = { // state 
-        showlogin: false,//to show login modal
-        showsignup: false,//to show signup modal
-        user: {//this is when we get informations from login modal
-            email: '',
-            login: '',
-            password: ''
-        },
-        register_user: {//this is when we get informations from signup modal
-            email: '',
-            name: '',
-            surname: '',
-            login: '',
-            password: ''
-        },
-        error: '',//possible error
-        message: '',//possible message
-        logged: false,//if we logged 
-        loggedUser: {//our logged user history of transfers
-            transfers: []
-        },
-        showMakeTransfer: false,//showing modal maketransfer
+
+class Userpanel extends Component {
+    state ={ 
+        showMakeTransfer: false,
+        error_while_transfer: null,
         bill_to_transfer: '',
         cash_to_transfer: 0,
         message_after_transfer: '',
-        error_while_transfer: false,
-        user_logged: { 
+        loggedUser:{
+            transfers:[],
             name: '',
             surname: '',
-            cash: 0,
+            cash: null,
             bill: ''
         }
-    };
+    }
     componentDidUpdate(){
         if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
         {
@@ -58,32 +39,20 @@ class Userpanel extends Component { // UserPanel component which is containter
                         date: new_date
                     }//return object and giving it into array
                 })
+                const user = {...this.state.loggedUser};
                 this.setState({
                     loggedUser: {
-                        transfers: history2
+                        transfers: history2,
+                        name: user.name,
+                        surname: user.surname,
+                        cash: user.cash-1,
+                        bill: user.bill
                     },
                     cash_to_transfer: 1 //this is also to avoid infinite loop
                 });
             }).catch(err=>{
                 console.log(err);
             });
-            axios.get('http://localhost:3000/user',{headers:{//getting information about user from API
-                "Authorization": 'Bearer '+localStorage.token
-            }})
-            .then(response=>{
-                const data = response.data;
-                this.setState({//setting state 
-                    user_logged:{
-                        name: data.name,
-                        surname: data.surname,
-                        cash: parseInt(data.cash),
-                        bill: data.bill
-                    }
-                });
-            })
-            .catch(err=>{
-                console.log(err);
-            })
         }
     }
     componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
@@ -106,50 +75,59 @@ class Userpanel extends Component { // UserPanel component which is containter
                         transfers: history2
                     }
                 });
+                axios.get('http://localhost:3000/user',{headers:{
+                    "Authorization": 'Bearer '+localStorage.token
+                }})
+                .then(response=>{
+                    const data = response.data;
+                    const transfers = [...this.state.loggedUser.transfers]
+                    this.setState({
+                        loggedUser: {
+                            transfers: transfers,
+                            name: data.name,
+                            surname: data.surname,
+                            cash: parseInt(data.cash),
+                            bill: data.bill
+                        }
+                    });
+                })
+                .catch(err=>{
+                    console.log(err);
+                })
             }).catch(err=>{
                 console.log(err);
             });
-            axios.get('http://localhost:3000/user',{headers:{
-                "Authorization": 'Bearer '+localStorage.token
-            }})
-            .then(response=>{
-                const data = response.data;
-                this.setState({
-                    user_logged:{
-                        name: data.name,
-                        surname: data.surname,
-                        cash: parseInt(data.cash),
-                        bill: data.bill
-                    }
-                });
-            })
-            .catch(err=>{
-                console.log(err);
-            })
         }
     }
-
+    makeTransferButtonHandler=()=>{
+        this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) : //special syntax to show make_transfer component
+        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});//setting state to default and showing modal with make_transfer component
+    }
     handleChangePanel = (event)=>{//handling in make_transfer form
         this.setState({
             [event.target.name]: event.target.value
         });
     }
-    handleChangeLogin = (event)=>{//handling in login form
-        this.setState({
-            user:{
-                ...this.state.user,
-                [event.target.name]: event.target.value
-            }
-        });
+    validateBill = (evt)=>{//stackoverflow... to validate if we writing only numbers in our input this is called in our Modal with make_transfer component
+        let theEvent = evt || window.event;
+        let key;
+        // Handle paste
+        if (theEvent.type === 'paste') {
+           key = evt.clipboardData.getData('text/plain');
+        } else {
+        // Handle key press
+            key = theEvent.keyCode || theEvent.which;
+            key = String.fromCharCode(key);
+        }        let regex = /[0-9]|\./;
+        if( !regex.test(key) ) {
+          theEvent.returnValue = false;
+          if(theEvent.preventDefault) theEvent.preventDefault();
+        }
     }
-    handleChangeSignup = (event)=> {//handling in signup form
-        this.setState({
-            register_user: {
-                ...this.state.register_user,
-                [event.target.name]: event.target.value
-            }
-        });
-    };
+    logoutButtonHandler =()=>{
+        localStorage.removeItem('token');//removing token from our storage
+        this.props.history.push({pathname: '/'});
+    }
     submitTransferButtonHandler=()=>{//sending request to our api Post with our token
         axios.post('http://localhost:3000/user/transfer',{
             bill: this.state.bill_to_transfer,//post body
@@ -169,99 +147,13 @@ class Userpanel extends Component { // UserPanel component which is containter
             });
         })
     }
-    makeTransferButtonHandler=()=>{
-        this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) : //special syntax to show make_transfer component
-        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});//setting state to default and showing modal with make_transfer component
-    }
-    loginButtonHandler =()=>{
-        this.state.showlogin ? this.setState({showlogin: false}) :
-        this.setState({showlogin: true});// to show login modal
-    };
-    signupButtonHandler =()=>{
-        this.state.showsignup ? this.setState({showsignup: false}) :
-        this.setState({showsignup: true, message: ''});// to show signup modal
-    };
-    logoutButtonHandler =()=>{
-        localStorage.removeItem('token');//removing token from our storage
-        this.refreshPage();//refreshing page 
-    }
-    submitSignupHandler = () =>{ //submit our signup
-        axios.post('http://localhost:3000/signup',this.state.register_user)//passing our body which represents this.state.register_user
-        .then(response=>{//setting state to default if we register user
-            this.setState({
-                message: response.data.message,
-                register_user: {
-                    email: '',
-                    name: '',
-                    surname: '',
-                    login: '',
-                    password: ''
-                }
-            });
-        })
-        .catch(err=>{
-            console.log(err);
-            this.setState({//setting default state and message 
-                message: 'Something wrong please write correct informations',
-                register_user: {
-                    email: '',
-                    name: '',
-                    surname: '',
-                    login: '',
-                    password: ''
-                }
-            });
-        })
-    }
-    submitLoginHandler = ()=>{// sending post request to login into system
-        axios.post('http://localhost:3000/login',this.state.user)
-        .then(response=>{
-            localStorage.token = response.data.token;//seting token in our app storage
-            this.setState({
-                logged: true
-            });
-        })
-        .catch(err=>{//if we passed wrong informations we setting error
-            this.setState({
-                error: err
-            });
-        })
-    }
-    validateBill = (evt)=>{//stackoverflow... to validate if we writing only numbers in our input this is called in our Modal with make_transfer component
-        let theEvent = evt || window.event;
-        let key;
-        // Handle paste
-        if (theEvent.type === 'paste') {
-           key = evt.clipboardData.getData('text/plain');
-        } else {
-        // Handle key press
-            key = theEvent.keyCode || theEvent.which;
-            key = String.fromCharCode(key);
-        }        let regex = /[0-9]|\./;
-        if( !regex.test(key) ) {
-          theEvent.returnValue = false;
-          if(theEvent.preventDefault) theEvent.preventDefault();
-        }
-    }
-    refreshPage = ()=>{//special function to reload page. We simply called this function when we logged into system and logout also
-        window.location.reload(false);//refresh page
-    }
+
     render(){
-        let userPanel;//variable to take our panel
-        if (this.state.logged === true)//if we logged we rendering special modal to take a customer into panel when we after a click on button refresh page
+        if (localStorage.token)
         {
-            userPanel = (<Aux>
-                <Button click={this.loginButtonHandler}>Login</Button>
-                <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
-                    <p>Succesfully logged into bank</p>
-                    <Button click={this.refreshPage}>TAKE ME TO PANEL</Button>
-                </Modal>
-            </Aux>);
-        } 
-        else if (localStorage.token)//if we have token we rendering panel with our history of transfers and information about user
-        {
-            userPanel=(
+            return (
                 <Aux>
+                    <Layout logged>
                     <h1 style={{fontWeight: 'normal'}}>Panel</h1>
                     <div style={{position: 'absolute',
                     width: '100%',
@@ -279,41 +171,17 @@ class Userpanel extends Component { // UserPanel component which is containter
                     <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                     </div>
                     <HistoryTransfers history={this.state.loggedUser.transfers}/>
-                    <Informations user={this.state.user_logged}/>
+                    <Informations user={this.state.loggedUser}/>
+                    </Layout>
                 </Aux>
             );
         }
-        else if (this.state.error==='' && this.state.logged===false)// This is rendering normal if we get site first time
-        {
-        userPanel = (<Aux>
-            <Button click={this.loginButtonHandler}>Log in</Button>
-            <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
-                <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>
-            </Modal>
-            <Button click={this.signupButtonHandler}>Register</Button>
-            <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
-                <Signup submit={this.submitSignupHandler} message={this.state.message} change={this.handleChangeSignup} user={this.state.register_user}/>
-            </Modal>
-        </Aux>);
+        else {
+            return(
+            <h1>Really? You are not logged</h1>
+            );
         }
-        else {//this render when we get error in login 
-        userPanel = (<Aux>
-            <Button click={this.loginButtonHandler}>Log in</Button>
-            <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
-            <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={"Something went wrong"}/>
-            </Modal>
-                <Button click={this.signupButtonHandler}>Register</Button>
-            <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
-                <Signup message={this.state.message} submit={this.submitSignupHandler} change={this.handleChangeSignup} user={this.state.register_user}/>
-            </Modal>
-        </Aux>);
-        }
-        return(//simply returning this variable
-            userPanel
-        );
     }
 }
 
 export default Userpanel;
-
-//This code required refactoring we might create new container component if we logged into system. Not setting all this information in one container component
