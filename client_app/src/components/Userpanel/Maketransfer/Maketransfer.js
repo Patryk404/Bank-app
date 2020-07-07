@@ -2,7 +2,7 @@ import React from 'react';
 import Button from '../../UI/Button/Button';
 import classes from './Maketransfer.module.css';
 const makeTransfer = (props)=>{
-    if (props.message ==='')
+    if (props.message ==='' && props.making_transfer === true)
     {
     return (
         <div className={classes.Maketransfer}>

@@ -16,6 +16,7 @@ class Userpanel extends Component {
         bill_to_transfer: '',
         cash_to_transfer: 0,
         message_after_transfer: '',
+        making_transfer: false,
         loggedUser:{
             transfers:[],
             name: '',
@@ -25,7 +26,7 @@ class Userpanel extends Component {
         }
     }
     componentDidUpdate(){
-        if (this.state.showMakeTransfer===true && this.state.cash_to_transfer===0 && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
+        if (this.state.showMakeTransfer===true && this.state.making_transfer===true  && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
         {
             axios.get('http://localhost:3000/user/history',{headers:{//geting history of transfer from specific user
                 "Authorization": 'Bearer '+localStorage.token
@@ -40,16 +41,18 @@ class Userpanel extends Component {
                     }//return object and giving it into array
                 })
                 const user = {...this.state.loggedUser};
-                this.setState({
+                console.log(history2.cash);
+                this.setState(prevState=>({
                     loggedUser: {
                         transfers: history2,
                         name: user.name,
                         surname: user.surname,
-                        cash: user.cash-1,
+                        cash: user.cash-prevState.cash_to_transfer,
+                        cash_to_transfer: 0,
                         bill: user.bill
                     },
-                    cash_to_transfer: 1 //this is also to avoid infinite loop
-                });
+                    making_transfer: false
+                }));
             }).catch(err=>{
                 console.log(err);
             });
@@ -101,7 +104,7 @@ class Userpanel extends Component {
     }
     makeTransferButtonHandler=()=>{
         this.state.showMakeTransfer ? this.setState({showMakeTransfer: false}) : //special syntax to show make_transfer component
-        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0});//setting state to default and showing modal with make_transfer component
+        this.setState({showMakeTransfer: true,message_after_transfer: '',error_while_transfer: false,bill_to_transfer: '',cash_to_transfer: 0,making_transfer: true});//setting state to default and showing modal with make_transfer component
     }
     handleChangePanel = (event)=>{//handling in make_transfer form
         this.setState({
@@ -129,6 +132,9 @@ class Userpanel extends Component {
         this.props.history.push({pathname: '/'});
     }
     submitTransferButtonHandler=()=>{//sending request to our api Post with our token
+        this.setState({
+            making_transfer: true
+        });
         axios.post('http://localhost:3000/user/transfer',{
             bill: this.state.bill_to_transfer,//post body
             cash: this.state.cash_to_transfer
@@ -137,7 +143,6 @@ class Userpanel extends Component {
         .then(response=>{//response getting
             this.setState({
                 bill_to_transfer: '',//set state to default before we make_transfer
-                cash_to_transfer: 0,
                 message_after_transfer: response.data.message
             });
         }).catch(err=>{
@@ -160,7 +165,7 @@ class Userpanel extends Component {
                     top: '200px'}}>
                     <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
                     <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
-                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer}/>
+                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer}/>
                     </Modal>
                     </div>
                     <div style={{position: 'fixed',// please change this soon 
