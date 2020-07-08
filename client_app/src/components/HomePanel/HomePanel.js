@@ -5,12 +5,14 @@ import Layout from '../../hoc/Layout/Layout';
 import Modal from '../UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Signup from './Signup/Signup';
+import Spinner from '../UI/Spinner/Spinner';
 import axios from 'axios';
 
 class Userpanel extends Component { // UserPanel component which is containter 
     state = { // state 
         showlogin: false,//to show login modal
         showsignup: false,//to show signup modal
+        loading: false,
         user: {//this is when we get informations from login modal
             email: '',
             login: '',
@@ -53,6 +55,7 @@ class Userpanel extends Component { // UserPanel component which is containter
         this.setState({showsignup: true, message: ''});// to show signup modal
     };
     submitSignupHandler = () =>{ //submit our signup
+        this.setState({loading: true});
         axios.post('http://localhost:3000/signup',this.state.register_user)//passing our body which represents this.state.register_user
         .then(response=>{//setting state to default if we register user
             this.setState({
@@ -63,7 +66,8 @@ class Userpanel extends Component { // UserPanel component which is containter
                     surname: '',
                     login: '',
                     password: ''
-                }
+                },
+                loading: false
             });
         })
         .catch(err=>{
@@ -76,22 +80,26 @@ class Userpanel extends Component { // UserPanel component which is containter
                     surname: '',
                     login: '',
                     password: ''
-                }
+                },
+                loading: false
             });
         })
     }
     submitLoginHandler = ()=>{// sending post request to login into system
+        this.setState({loading: true});
         axios.post('http://localhost:3000/login',this.state.user)
         .then(response=>{
             localStorage.token = response.data.token;//seting token in our app storage
             this.setState({
-                logged: true
+                logged: true,
+                loading: false
             });
 
         })
         .catch(err=>{//if we passed wrong informations we setting error
             this.setState({
-                error: true
+                error: true,
+                loading: false 
             });
         })
     }
@@ -129,12 +137,15 @@ class Userpanel extends Component { // UserPanel component which is containter
             <Button click={this.loginButtonHandler}>Log in</Button>
             <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
             {
-                this.state.error ? <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={'Something went wrong sorry :('}/> : <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>                
+                this.state.loading ? <Spinner home/> : this.state.error ? <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={'Something went wrong sorry :('}/> : <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>                
             }
             </Modal>
             <Button click={this.signupButtonHandler}>Register</Button>
             <Modal show={this.state.showsignup} clickonbackdrop={this.signupButtonHandler}>
-                <Signup submit={this.submitSignupHandler} message={this.state.message} change={this.handleChangeSignup} user={this.state.register_user}/>
+                {
+                    this.state.loading ? <Spinner home/> : <Signup submit={this.submitSignupHandler} message={this.state.message} change={this.handleChangeSignup} user={this.state.register_user}/>
+
+                }
             </Modal>
             </Layout>
         </Aux>);

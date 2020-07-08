@@ -17,6 +17,7 @@ class Userpanel extends Component {
         cash_to_transfer: 0,
         message_after_transfer: '',
         making_transfer: false,
+        loading: false,
         loggedUser:{
             transfers:[],
             name: '',
@@ -133,7 +134,8 @@ class Userpanel extends Component {
     }
     submitTransferButtonHandler=()=>{//sending request to our api Post with our token
         this.setState({
-            making_transfer: true
+            making_transfer: true,
+            loading: true
         });
         axios.post('http://localhost:3000/user/transfer',{
             bill: this.state.bill_to_transfer,//post body
@@ -143,12 +145,14 @@ class Userpanel extends Component {
         .then(response=>{//response getting
             this.setState({
                 bill_to_transfer: '',//set state to default before we make_transfer
-                message_after_transfer: response.data.message
+                message_after_transfer: response.data.message,
+                loading: false
             });
         }).catch(err=>{
             console.log(err);
             this.setState({// if we have error setting error state
-                error_while_transfer: true
+                error_while_transfer: true,
+                loading: false
             });
         })
     }
@@ -164,9 +168,11 @@ class Userpanel extends Component {
                     width: '100%',
                     top: '200px'}}>
                     <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
+                    { this.state.showMakeTransfer ? 
                     <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
-                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer}/>
-                    </Modal>
+                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer} loading={this.state.loading}/>
+                    </Modal> : null
+                    }
                     </div>
                     <div style={{position: 'fixed',// please change this soon 
                     width: '75%',

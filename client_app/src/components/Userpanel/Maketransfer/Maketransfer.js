@@ -1,8 +1,18 @@
 import React from 'react';
 import Button from '../../UI/Button/Button';
 import classes from './Maketransfer.module.css';
-const makeTransfer = (props)=>{
-    if (props.message ==='' && props.making_transfer === true)
+import {useEffect} from 'react';
+import Spinner from '../../UI/Spinner/Spinner';
+const MakeTransfer = (props)=>{
+    useEffect(()=>{
+        console.log('update');
+    })
+    if (props.loading === true){
+        return (
+            <Spinner/>
+        )
+    }
+    else if (props.message ==='' && props.making_transfer === true)
     {
     return (
         <div className={classes.Maketransfer}>
@@ -26,4 +36,4 @@ const makeTransfer = (props)=>{
     }
 };
 
-export default makeTransfer;
+export default MakeTransfer;
