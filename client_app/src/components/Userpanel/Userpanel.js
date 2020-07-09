@@ -162,6 +162,7 @@ class Userpanel extends Component {
         if (localStorage.token)
         {
             return (
+                <Aux>
                 <div className={classes.Panel}>
                     <Layout logged>
                     <h1 style={{fontWeight: 'normal'}}>Panel</h1>
@@ -178,6 +179,7 @@ class Userpanel extends Component {
                     <Informations user={this.state.loggedUser}/>
                     </Layout>
                 </div>
+                </Aux>
             );
         }
         else {

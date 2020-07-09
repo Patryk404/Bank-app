@@ -33,7 +33,7 @@ describe('<UserPanel />',()=>{
     });
     it('should render modal with MakeTransfer if we click into button ',()=>{
         expect(wrapper.state().showMakeTransfer).toEqual(false);
-        const ButtonComponent = wrapper.find('button').first();
+        const ButtonComponent = wrapper.find('button').at(1); //selecting second node
         ButtonComponent.props().click();
         //console.log('find button component', ButtonComponent.debug());
         //wrapper.instance().makeTransferButtonHandler();

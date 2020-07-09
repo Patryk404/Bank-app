@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<UserPanel /> matches snapshot 1`] = `
-Array [
+<div
+  className="Panel"
+>
   <div
     className="Logo_logged"
   >
@@ -9,7 +11,7 @@ Array [
       alt="Logo"
       src="logo.png"
     />
-  </div>,
+  </div>
   <h1
     style={
       Object {
@@ -18,41 +20,21 @@ Array [
     }
   >
     Panel
-  </h1>,
-  <div
-    style={
-      Object {
-        "position": "absolute",
-        "top": "200px",
-        "width": "100%",
-      }
-    }
-  >
-    <button
-      className="Button"
-      onClick={[Function]}
-    >
-      Make Transfer
-    </button>
-  </div>,
-  <div
-    style={
-      Object {
-        "left": "800px",
-        "position": "fixed",
-        "textAlign": "none",
-        "top": "0px",
-        "width": "75%",
-      }
-    }
-  >
+  </h1>
+  <div>
     <button
       className="Button Red"
       onClick={[Function]}
     >
       Log Out
     </button>
-  </div>,
+    <button
+      className="Button"
+      onClick={[Function]}
+    >
+      Make Transfer
+    </button>
+  </div>
   <div
     className="Transfers"
   >
@@ -67,7 +49,7 @@ Array [
       History of Transfers
     </h1>
     <ul />
-  </div>,
+  </div>
   <div
     className="Informations"
   >
@@ -100,6 +82,6 @@ Array [
         </h3>
       </li>
     </ul>
-  </div>,
-]
+  </div>
+</div>
 `;

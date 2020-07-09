@@ -126,7 +126,7 @@ class Userpanel extends Component { // UserPanel component which is containter
             </Aux>);
         } 
         else
-        {
+    {
         userPanel = (<Aux>
             <Layout>
                       <div style={{fontSize: "30px"}}>
