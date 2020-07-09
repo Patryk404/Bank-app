@@ -25,5 +25,9 @@ describe('<MakeTransfer/>',()=>{
         expect(wrapper.find('input')).toHaveLength(2);
         expect(wrapper.find(Button)).toHaveLength(1);
     });
+    it('should render a error when paragraph when this is occured',()=>{
+        wrapper.setProps({error: true, message: '', making_transfer: true});
+        expect(wrapper.find('p').text()).toEqual("Oh sorry you haven't got any cash or we can't find the appropriate bill");
+    });
         
 });

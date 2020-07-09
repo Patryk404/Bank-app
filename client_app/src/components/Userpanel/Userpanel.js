@@ -163,22 +163,22 @@ class Userpanel extends Component {
         {
             return (
                 <Aux>
-                <div className={classes.Panel}>
-                    <Layout logged>
-                    <h1 style={{fontWeight: 'normal'}}>Panel</h1>
-                    <div >
-                    <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
-                    <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
-                    { this.state.showMakeTransfer ? 
-                    <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
-                        <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer} loading={this.state.loading}/>
-                    </Modal> : null
-                    }
+                    <div className={classes.Panel}>
+                        <Layout logged>
+                        <h1 style={{fontWeight: 'normal'}}>Panel</h1>
+                        <div >
+                        <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
+                        <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
+                        { this.state.showMakeTransfer ? 
+                        <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
+                            <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer} loading={this.state.loading}/>
+                        </Modal> : null
+                        }
+                        </div>
+                        <HistoryTransfers history={this.state.loggedUser.transfers}/>
+                        <Informations user={this.state.loggedUser}/>
+                        </Layout>
                     </div>
-                    <HistoryTransfers history={this.state.loggedUser.transfers}/>
-                    <Informations user={this.state.loggedUser}/>
-                    </Layout>
-                </div>
                 </Aux>
             );
         }

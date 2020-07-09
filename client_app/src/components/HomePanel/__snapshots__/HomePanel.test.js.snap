@@ -1,0 +1,151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<HomePanel /> matches snapshot 1`] = `
+Array [
+  <div
+    className="Logo"
+  >
+    <img
+      alt="Logo"
+      src="logo.png"
+    />
+  </div>,
+  <div
+    style={
+      Object {
+        "fontSize": "30px",
+      }
+    }
+  >
+    Hi welcome in our bank!
+    <br />
+    Come on look at your money!
+  </div>,
+  <button
+    className="Button"
+    onClick={[Function]}
+  >
+    Log in
+  </button>,
+  <div
+    className="Modal"
+    style={
+      Object {
+        "opacity": "0",
+        "transform": "translateY(-100vh)",
+      }
+    }
+  >
+    <div
+      className="Login"
+    >
+      <label>
+        Mail:
+        <input
+          name="email"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Login:
+        <input
+          name="login"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Password:
+        <input
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </label>
+      <button
+        className="Button"
+        onClick={[Function]}
+      >
+        Login
+      </button>
+      <br />
+      
+    </div>
+  </div>,
+  <button
+    className="Button"
+    onClick={[Function]}
+  >
+    Register
+  </button>,
+  <div
+    className="Modal"
+    style={
+      Object {
+        "opacity": "0",
+        "transform": "translateY(-100vh)",
+      }
+    }
+  >
+    <div
+      className="Signup"
+    >
+      <label>
+        Mail:
+        <input
+          name="email"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Name:
+        <input
+          name="name"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Surname:
+        <input
+          name="surname"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Login:
+        <input
+          name="login"
+          onChange={[Function]}
+          type="text"
+          value=""
+        />
+      </label>
+      <label>
+        Password:
+        <input
+          name="password"
+          onChange={[Function]}
+          type="password"
+          value=""
+        />
+      </label>
+      <button
+        className="Button"
+        onClick={[Function]}
+      >
+        Signup
+      </button>
+    </div>
+  </div>,
+]
+`;
