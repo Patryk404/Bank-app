@@ -1,3 +1,105 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`<UserPanel /> should render a UserPanel component approprietly 1`] = `ShallowWrapper {}`;
+exports[`<UserPanel /> matches snapshot 1`] = `
+Array [
+  <div
+    className="Logo_logged"
+  >
+    <img
+      alt="Logo"
+      src="logo.png"
+    />
+  </div>,
+  <h1
+    style={
+      Object {
+        "fontWeight": "normal",
+      }
+    }
+  >
+    Panel
+  </h1>,
+  <div
+    style={
+      Object {
+        "position": "absolute",
+        "top": "200px",
+        "width": "100%",
+      }
+    }
+  >
+    <button
+      className="Button"
+      onClick={[Function]}
+    >
+      Make Transfer
+    </button>
+  </div>,
+  <div
+    style={
+      Object {
+        "left": "800px",
+        "position": "fixed",
+        "textAlign": "none",
+        "top": "0px",
+        "width": "75%",
+      }
+    }
+  >
+    <button
+      className="Button Red"
+      onClick={[Function]}
+    >
+      Log Out
+    </button>
+  </div>,
+  <div
+    className="Transfers"
+  >
+    <h1
+      style={
+        Object {
+          "fontSize": "20px",
+          "fontWeight": "normal",
+        }
+      }
+    >
+      History of Transfers
+    </h1>
+    <ul />
+  </div>,
+  <div
+    className="Informations"
+  >
+    <h1>
+      Informations
+    </h1>
+    <ul>
+      <li>
+        <h2
+          style={
+            Object {
+              "fontSize": "36px",
+            }
+          }
+        >
+          
+           
+          
+        </h2>
+      </li>
+      <li>
+        <h3>
+          Cash: 
+        </h3>
+      </li>
+      <li>
+        <h3>
+          Bill Number: 
+          
+        </h3>
+      </li>
+    </ul>
+  </div>,
+]
+`;

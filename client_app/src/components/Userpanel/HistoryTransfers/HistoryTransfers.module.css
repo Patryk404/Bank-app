@@ -15,3 +15,15 @@
 .Transfers ul{
     display: inline;
 }
+
+@media (max-width: 600px){
+    .Transfers {
+        position: relative;
+        margin: auto;
+        top: 0px;
+        left: 0;
+        height: 350px;
+        width: 80%;
+        overflow: auto;
+    }
+}

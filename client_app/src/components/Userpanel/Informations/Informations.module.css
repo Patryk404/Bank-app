@@ -1,7 +1,7 @@
 .Informations {
-    position: fixed;
-    bottom:  150px;
-    left: 500px;
+    position: relative;
+    top:  100px;
+    left: 100px;
     display: inline-block;
     text-align: center;
     background-color: #ABFFFF;
@@ -12,4 +12,15 @@
 .Informations ul {
     list-style-type: none;
     display: inline;
+}
+
+@media (max-width: 600px){
+    .Informations{
+    position: unset;
+    bottom: unset;
+    left: unset;
+    width: 80%;
+    display: inline-block;
+    margin-top: 10px;
+    }
 }

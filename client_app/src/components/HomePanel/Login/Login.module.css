@@ -8,3 +8,10 @@
     width: unset;
     background-color: red;
 }
+
+@media (max-width: 600px){
+    .Login input {
+        width: 100%;
+        resize: vertical;
+    }
+}

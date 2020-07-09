@@ -24,3 +24,12 @@
     -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
     transition: all 0.4s ease 0s;
 }
+
+@media (max-width: 600px){
+    .Button {
+        display: block;
+        margin: 20px auto;
+        width: 80%;
+        text-align: center;
+    }
+}

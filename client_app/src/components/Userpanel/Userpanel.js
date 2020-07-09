@@ -7,6 +7,7 @@ import HistoryTransfers from './HistoryTransfers/HistoryTransfers';
 import Informations from './Informations/Informations';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
+import classes from './UserPanel.module.css';
 
 
 class Userpanel extends Component {
@@ -161,12 +162,11 @@ class Userpanel extends Component {
         if (localStorage.token)
         {
             return (
-                <Aux>
+                <div className={classes.Panel}>
                     <Layout logged>
                     <h1 style={{fontWeight: 'normal'}}>Panel</h1>
-                    <div style={{position: 'absolute',
-                    width: '100%',
-                    top: '200px'}}>
+                    <div >
+                    <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                     <Button click={this.makeTransferButtonHandler}>Make Transfer</Button>
                     { this.state.showMakeTransfer ? 
                     <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
@@ -174,17 +174,10 @@ class Userpanel extends Component {
                     </Modal> : null
                     }
                     </div>
-                    <div style={{position: 'fixed',// please change this soon 
-                    width: '75%',
-                    top: '0px',
-                    left: '800px',
-                    textAlign: 'none'}}>
-                    <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
-                    </div>
                     <HistoryTransfers history={this.state.loggedUser.transfers}/>
                     <Informations user={this.state.loggedUser}/>
                     </Layout>
-                </Aux>
+                </div>
             );
         }
         else {

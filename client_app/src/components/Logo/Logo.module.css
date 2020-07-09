@@ -21,3 +21,10 @@
 .Logo img{
     height: 350px;
 }
+
+@media (max-width: 600px){
+    .Logo_logged img{
+        width: 75px;
+        height: 75px;
+    }
+}

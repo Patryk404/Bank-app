@@ -7,3 +7,10 @@
 .Maketransfer Button {
     width: unset;
 }
+
+@media (max-width: 600px){
+    .Maketransfer input{
+    width: 100%;
+    resize: vertical;
+    }
+}
