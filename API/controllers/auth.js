@@ -31,9 +31,9 @@ module.exports.signup= async (req,res,next) =>{
     });
 }
 module.exports.login = async (req,res,next)=>{
-    const email = req.body.email;
-    const login = req.body.login;
-    const password = req.body.password; 
+    const email = req.body.email.replace(/\s/g,'');
+    const login = req.body.login.replace(/\s/g,'');
+    const password = req.body.password.replace(/\s/g,''); // avoiding spaces in login form 
     const user = await User.findOne({where: {email: email}});//find user 
     if (user)// if user is not null
     {

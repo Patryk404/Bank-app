@@ -8,6 +8,7 @@
     width: unset;
 }
 
+
 @media (max-width: 600px){
     .Maketransfer input{
     width: 100%;
