@@ -7,7 +7,8 @@ const style = theme =>{
     return ({
         button_class: {
             padding: '10px',
-            margin: '20px'
+            display: 'block',
+            margin: 'auto',
         },
     }
     );
