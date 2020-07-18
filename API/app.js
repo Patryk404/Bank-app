@@ -6,6 +6,7 @@ const bodyParser = require('body-parser'); //parsing to json
 const sequelize = require('./utils/database');
 const authRoute = require('./routes/auth.js');
 const userpanelRoute = require('./routes/userpanel');
+const adminpanelRoute = require('./routes/admin');
 app.use(bodyParser.json());//this must be if we want to work for json's files 
 app.use((req, res, next) => {//cors policy
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -20,6 +21,8 @@ app.use((req, res, next) => {//cors policy
 app.use(authRoute);// '/'
 
 app.use('/user',userpanelRoute);
+
+app.use('/admin',adminpanelRoute);
 
 app.use((error,req,res,next)=>{//error handling
   console.log(error);
