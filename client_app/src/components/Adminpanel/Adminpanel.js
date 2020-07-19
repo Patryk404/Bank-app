@@ -9,10 +9,18 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { TableBody } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
+import Modal from '../UI/Modal/Modal';
+import Input from '@material-ui/core/Input';
 
 class Adminpanel extends React.Component {
     state = {
-        users: [] 
+        users: [],
+        modal_show: false,
+        new_admin: {
+            email: '',
+            login: '',
+            password: ''
+        }
     };
     componentDidMount(){
         axios.get('http://localhost:3000/admin/users')
@@ -23,6 +31,36 @@ class Adminpanel extends React.Component {
             });
         });
     };  
+
+    click_new_admin=()=> {
+        this.setState(prevstate=>({
+            modal_show: !prevstate.modal_show
+        }));
+    }
+    submit_new_admin=()=>{
+        axios.post('http://localhost:3000/admin/new_admin',{
+            email: this.state.new_admin.email, 
+            login: this.state.new_admin.login,
+            password: this.state.new_admin.password
+        },{headers:{
+            'Content-Type': 'application/json'
+        }})
+        .then(response=>{
+            console.log(response.data.message);
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+    }
+    handleChange = event=>{
+        this.setState({
+            new_admin:{
+                ...this.state.new_admin,
+                [event.target.name]: event.target.value
+            }
+        });
+    }
+
     render(){
         let users;
         if (this.state.users)
@@ -47,9 +85,21 @@ class Adminpanel extends React.Component {
             <div className={classes.panel}>
                 <Layout logged>
                     <h1>Welcome in admin panel</h1>
-                    <Button variant="contained" color="primary">
+                    <Button onClick={this.click_new_admin} variant="contained" color="primary">
                         Create new admin account
                     </Button>
+                    <Modal show={this.state.modal_show} clickonbackdrop={this.click_new_admin}>
+                        <div className={classes.modal}>
+                            <Input type='email' name="email" onChange={this.handleChange} placeholder="Email"/>
+                            <Input type='text' name="login" onChange={this.handleChange} placeholder="Login"/>
+                            <Input type='text' name="password" onChange={this.handleChange} placeholder="Password"/>
+                            <br/>
+                            <br/> {
+                                //idk why two xD
+                            }
+                            <Button onClick={this.submit_new_admin}>Create</Button>
+                        </div>
+                    </Modal>
                     <br/>
                     <Box className={classes.Box}>
                         <Table className={classes.table} aria-label="simple table">

@@ -22,3 +22,9 @@
     padding-right: 50px;
 }
 
+.modal{ 
+    text-align: center;
+    width: 40%;
+    display: inline-block;
+}
+
