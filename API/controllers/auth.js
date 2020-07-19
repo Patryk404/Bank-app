@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const Admin = require('../models/admin');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const {generatebill} = require('../utils/complicated-bill-generator');
@@ -35,6 +36,7 @@ module.exports.login = async (req,res,next)=>{
     const login = req.body.login.replace(/\s/g,'');
     const password = req.body.password.replace(/\s/g,''); // avoiding spaces in login form 
     const user = await User.findOne({where: {email: email}});//find user 
+    const admin = await Admin.findOne({where: {email: email}});
     if (user)// if user is not null
     {
         if (user.login===login)// if our login is correct 
@@ -50,6 +52,24 @@ module.exports.login = async (req,res,next)=>{
                 });
                 return res.status(200).json({token: token,//returning token to store it in our frontend
                     message: "Welcome in bank "+user.name+"!"});
+            }
+        }
+    }
+    else if(admin){
+        if(admin.login===login){
+            const agree = await bcrypt.compare(password,admin.password);
+            if(agree){
+                const token = await jwt.sign({
+                    email: admin.email,
+                    adminId: admin.id
+                },process.env.JWT_Secret,{
+                    expiresIn: '1h'
+                });
+                return res.status(200).json({token: token,
+                message: "Hello admin",
+                meta: {
+                    admin: true
+                }});
             }
         }
     }

@@ -7,6 +7,8 @@ import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Signup from './Signup/Signup';
 import Spinner from '../UI/Spinner/Spinner';
 import axios from 'axios';
+import {connect} from 'react-redux';
+import * as actions from '../../store/actions/index';
 
 class Userpanel extends Component { // UserPanel component which is containter 
     state = { // state 
@@ -90,6 +92,10 @@ class Userpanel extends Component { // UserPanel component which is containter
         axios.post('http://localhost:3000/login',this.state.user)
         .then(response=>{
             localStorage.token = response.data.token;//seting token in our app storage
+            if(response.data.meta){//if we have metadata for admin we can see admin panel
+                this.props.setAdmin();
+                return this.props.history.push('/adminpanel');
+            }
             this.setState({
                 logged: true,
                 loading: false
@@ -156,6 +162,12 @@ class Userpanel extends Component { // UserPanel component which is containter
     }
 }
 
-export default Userpanel;
+const mapDispatchToProps = dispatch =>{
+    return {
+        setAdmin: ()=>dispatch(actions.setAdmin())
+    }
+}
+
+export default connect(null,mapDispatchToProps)(Userpanel);
 
 //This code required refactoring we might create new container component if we logged into system. Not

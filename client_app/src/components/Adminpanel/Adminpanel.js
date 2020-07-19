@@ -1,5 +1,6 @@
 import React from 'react';
 import Button from '../UI/test_button_materialUI/Button'; 
+import Button_logout from '../UI/Button/Button';
 import classes from './Adminpanel.module.css';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
@@ -11,11 +12,16 @@ import { TableBody } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Modal from '../UI/Modal/Modal';
 import Input from '@material-ui/core/Input';
+import Spinner from '../UI/Spinner/Spinner';
+import {connect} from 'react-redux'; 
+import * as actions from '../../store/actions/index';
 
 class Adminpanel extends React.Component {
     state = {
         users: [],
         modal_show: false,
+        loading: false,
+        message: '',
         new_admin: {
             email: '',
             login: '',
@@ -23,7 +29,9 @@ class Adminpanel extends React.Component {
         }
     };
     componentDidMount(){
-        axios.get('http://localhost:3000/admin/users')
+        axios.get('http://localhost:3000/admin/users',{headers:{
+            "Authorization": 'Bearer '+localStorage.token
+        }})
         .then(response=>{
             console.log(response.data);
             this.setState({
@@ -34,22 +42,36 @@ class Adminpanel extends React.Component {
 
     click_new_admin=()=> {
         this.setState(prevstate=>({
+            message: '',
             modal_show: !prevstate.modal_show
         }));
     }
     submit_new_admin=()=>{
+        this.setState({
+            loading:true
+        });
         axios.post('http://localhost:3000/admin/new_admin',{
             email: this.state.new_admin.email, 
             login: this.state.new_admin.login,
             password: this.state.new_admin.password
         },{headers:{
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer '+localStorage.token
         }})
         .then(response=>{
             console.log(response.data.message);
+            this.setState({
+                message: response.data.message,
+                new_admin:{
+                email: '',
+                login: '',
+                password: ''
+            }});
+            this.setState({loading: false});
         })
         .catch(err=>{
             console.log(err);
+            this.setState({loading: false});
         })
     }
     handleChange = event=>{
@@ -59,6 +81,12 @@ class Adminpanel extends React.Component {
                 [event.target.name]: event.target.value
             }
         });
+    }
+
+    logoutButtonHandler = ()=>{
+        localStorage.removeItem('token');
+        this.props.unsetAdmin();
+        this.props.history.push({pathname: '/'});
     }
 
     render(){
@@ -85,6 +113,9 @@ class Adminpanel extends React.Component {
             <div className={classes.panel}>
                 <Layout logged>
                     <h1>Welcome in admin panel</h1>
+                    <Button_logout styled={'red'} click={this.logoutButtonHandler}> 
+                        Log out
+                    </Button_logout>
                     <Button onClick={this.click_new_admin} variant="contained" color="primary">
                         Create new admin account
                     </Button>
@@ -97,7 +128,8 @@ class Adminpanel extends React.Component {
                             <br/> {
                                 //idk why two xD
                             }
-                            <Button onClick={this.submit_new_admin}>Create</Button>
+                            {this.state.loading ? <Spinner/> : <Button onClick={this.submit_new_admin}>Create</Button>}
+                        {this.state.message ? <p>{this.state.message}</p> : null}
                         </div>
                     </Modal>
                     <br/>
@@ -125,4 +157,10 @@ class Adminpanel extends React.Component {
     }
 }
 
-export default Adminpanel;
+const mapDispatchToProps = dispatch =>{
+    return {
+        unsetAdmin: ()=>dispatch(actions.unsetAdmin())
+    }
+};
+
+export default connect(null,mapDispatchToProps)(Adminpanel);
