@@ -59,7 +59,7 @@ class Adminpanel extends React.Component {
             "Authorization": 'Bearer '+localStorage.token
         }})
         .then(response=>{
-            console.log(response.data.message);
+            //console.log(response.data.message);
             this.setState({
                 message: response.data.message,
                 new_admin:{
@@ -89,6 +89,27 @@ class Adminpanel extends React.Component {
         this.props.history.push({pathname: '/'});
     }
 
+    deleteButtonHandler = id =>{
+        axios.delete('http://localhost:3000/admin/user/'+id,{headers:{
+            'Content-Type': 'application/json',
+            "Authorization": 'Bearer '+localStorage.token
+        }}).then(response=>{
+            return axios.get('http://localhost:3000/admin/users',{headers:{
+                "Authorization": 'Bearer '+localStorage.token
+            }});
+        }).then(response=>{
+            this.setState({
+                users: response.data.users
+            });
+        }).catch(err=>{
+            console.log(err);
+        })
+    }
+
+    editButtonHnalder = id =>{
+        this.props.history.push({pathname: '/adminpanel/user/'+id});
+    }
+
     render(){
         let users;
         if (this.state.users)
@@ -103,8 +124,8 @@ class Adminpanel extends React.Component {
                         <TableCell>{user.login}</TableCell>
                         <TableCell>{user.bill}</TableCell>
                         <TableCell>{user.cash}</TableCell>
-                        <TableCell><Button>Edit</Button></TableCell>
-                        <TableCell><Button>Delete</Button></TableCell>
+                        <TableCell><Button onClick={()=>this.editButtonHnalder(user.id)}>Edit</Button></TableCell>
+                        <TableCell><Button onClick={()=>this.deleteButtonHandler(user.id)}>Delete</Button></TableCell>
                     </TableRow>
                 );
             });

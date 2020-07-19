@@ -7,4 +7,6 @@ router.post('/new_admin',isAdmin,adminController.create_admin);
 
 router.get('/users',isAdmin,adminController.get_users); 
 
+router.delete('/user/:id',isAdmin,adminController.delete_user)
+
 module.exports = router;

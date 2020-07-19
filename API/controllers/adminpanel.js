@@ -23,3 +23,11 @@ module.exports.get_users = async(req,res,next)=>{
         users: users
     });
 }
+
+module.exports.delete_user = async(req,res,next)=>{
+    const id = req.params.id;
+    await User.destroy({where: {id: id}});
+    res.status(201).json({
+        message: 'Succesfully deleted user'
+    });
+}

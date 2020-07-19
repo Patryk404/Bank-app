@@ -4,6 +4,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import HomePanel from './components/HomePanel/HomePanel';
 import UserPanel from './components/Userpanel/UserPanel'; 
 import AdminPanel from './components/Adminpanel/Adminpanel';
+import EditPanel from './components/Editpanel/Editpanel';
 import {connect} from 'react-redux';
 function App(props) {
     return (
@@ -16,6 +17,10 @@ function App(props) {
           <Route path='/adminpanel' exact component={AdminPanel}/> :
           null
           } 
+          {
+            props.admin ? 
+            <Route path='/adminpanel/user/:id' exact component={EditPanel}/> : null
+          }
           <Route render={()=><h1>You cannot reach this page sorry!</h1>}/>
         </Switch>
         </BrowserRouter>
