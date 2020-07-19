@@ -14,7 +14,8 @@ module.exports.create_admin = async (req,res,next) =>{
 
 module.exports.get_users = async(req,res,next)=>{
     const users = await User.findAll({
-        attributes: ['bill','cash','id','name','surname','login']
+        order: ['id'],
+        attributes: ['bill','cash','id','name','surname','login','email']
     });
     res.status(200).json({
         users: users
