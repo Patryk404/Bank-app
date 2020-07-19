@@ -4,8 +4,8 @@ import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer'; 
 import HomePanel from './HomePanel';
 import Modal from '../UI/Modal/Modal';
-import Login from './Login/Login';
-import SignUp from './Signup/Signup';
+import Login from '../../components/Login/Login';
+import SignUp from '../../components/Signup/Signup';
 import Button from '../UI/Button/Button';
 
 configure({adapter: new Adapter});

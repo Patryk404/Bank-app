@@ -1,10 +1,10 @@
 import React from 'react';
 import classes from './App.module.css';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
-import HomePanel from './components/HomePanel/HomePanel';
-import UserPanel from './components/Userpanel/UserPanel'; 
-import AdminPanel from './components/Adminpanel/Adminpanel';
-import EditPanel from './components/Editpanel/Editpanel';
+import HomePanel from './containers/HomePanel/HomePanel';
+import UserPanel from './containers/Userpanel/UserPanel'; 
+import AdminPanel from './containers/Adminpanel/Adminpanel';
+import EditPanel from './containers/Editpanel/Editpanel';
 import {connect} from 'react-redux';
 function App(props) {
     return (

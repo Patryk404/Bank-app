@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import Button from '../UI/Button/Button';
-import Login from './Login/Login';
+import Button from '../../components/UI/Button/Button';
+import Login from '../../components/Login/Login';
 import Layout from '../../hoc/Layout/Layout';
-import Modal from '../UI/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
-import Signup from './Signup/Signup';
-import Spinner from '../UI/Spinner/Spinner';
+import Signup from '../../components/Signup/Signup';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';

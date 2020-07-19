@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
-import Button from '../UI/Button/Button';
-import Modal from '../UI/Modal/Modal';
-import MakeTransfer from './Maketransfer/Maketransfer';
-import HistoryTransfers from './HistoryTransfers/HistoryTransfers';
-import Informations from './Informations/Informations';
+import Button from '../../components/UI/Button/Button';
+import Modal from '../../components/UI/Modal/Modal';
+import MakeTransfer from '../../components/Maketransfer/Maketransfer';
+import HistoryTransfers from '../../components/HistoryTransfers/HistoryTransfers';
+import Informations from '../../components/Informations/Informations';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
 import classes from './UserPanel.module.css';

@@ -1,6 +1,6 @@
 import React from 'react';
-import Button from '../UI/test_button_materialUI/Button'; 
-import Button_logout from '../UI/Button/Button';
+import Button from '../../components/UI/test_button_materialUI/Button'; 
+import Buttonlogout from '../../components/UI/Button/Button';
 import classes from './Adminpanel.module.css';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
@@ -10,9 +10,9 @@ import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import { TableBody } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
-import Modal from '../UI/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
 import Input from '@material-ui/core/Input';
-import Spinner from '../UI/Spinner/Spinner';
+import Spinner from '../../components/UI/Spinner/Spinner';
 import {connect} from 'react-redux'; 
 import * as actions from '../../store/actions/index';
 
@@ -134,9 +134,9 @@ class Adminpanel extends React.Component {
             <div className={classes.panel}>
                 <Layout logged>
                     <h1>Welcome in admin panel</h1>
-                    <Button_logout styled={'red'} click={this.logoutButtonHandler}> 
+                    <Buttonlogout styled={'red'} click={this.logoutButtonHandler}> 
                         Log out
-                    </Button_logout>
+                    </Buttonlogout>
                     <Button onClick={this.click_new_admin} variant="contained" color="primary">
                         Create new admin account
                     </Button>

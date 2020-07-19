@@ -1,7 +1,7 @@
 import React from 'react';
 import classes from './HistoryTransfers.module.css';
 import HistoryTransfer from './HistoryTransfer/HistoryTransfer';
-import Aux from '../../../hoc/Auxiliary/Auxiliary';
+import Aux from '../../hoc/Auxiliary/Auxiliary';
 const historyTransfers = (props)=>{
     let transfers;
     if (props.history)

@@ -1,6 +1,6 @@
 import React from 'react'
 import classes from './Login.module.css';
-import Button from '../../UI/Button/Button';
+import Button from '../UI/Button/Button';
 
 import Input from '@material-ui/core/Input';
 
