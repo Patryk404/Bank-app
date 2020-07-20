@@ -22,3 +22,16 @@
     margin: auto;
     display: inline-block;
 }
+
+.img {
+    width: 100px;
+    height: 100px;
+    display: block;
+    position: absolute;
+    margin: 0px 30%;
+}
+
+.img:hover{
+    cursor: pointer;
+    filter: drop-shadow(10px 10px 4px #4444dd);
+}

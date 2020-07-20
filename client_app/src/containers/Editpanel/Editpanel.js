@@ -4,6 +4,7 @@ import classes from './Editpanel.module.css';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
+import back from '../../assets/images/back.png';
 import { Button } from '@material-ui/core';
 
 class EditPanel extends Component {
@@ -55,6 +56,7 @@ class EditPanel extends Component {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer '+localStorage.token
         }}).then(response=>{
+            this.setState({loading: false});
             alert('Succesfully edited user :D');
             this.props.history.push({pathname: '/adminpanel'});
         })
@@ -83,6 +85,7 @@ class EditPanel extends Component {
     render(){
         return(
             <Layout logged>
+            <img onClick={()=>{this.props.history.push({pathname: '/adminpanel'})}} className={classes.img} src={back} alt="Back button"/>
             <h1>
                 Editing {this.props.match.params.id}
             </h1>
