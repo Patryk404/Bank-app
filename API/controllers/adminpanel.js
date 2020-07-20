@@ -31,3 +31,25 @@ module.exports.delete_user = async(req,res,next)=>{
         message: 'Succesfully deleted user'
     });
 }
+
+module.exports.get_user = async(req,res,next)=>{
+    const id = req.params.id;
+    const user = await User.findOne({where: {id: id},attributes: ['bill','cash','id','name','surname','login','email']});
+    if(!user){
+        const error = new Error();
+        error.message = "We can't find this user, sorry";
+        error.statusCode = 500;
+        return next(error);
+    }
+    res.status(200).json({
+        user: user 
+    });
+};
+
+module.exports.edit_user = async(req,res,next)=>{
+    const id = req.params.id;
+    await User.update({...req.body},{where: {id:id}});
+    res.status(201).json({
+        message: 'Succesfully edited user'
+    });
+};  

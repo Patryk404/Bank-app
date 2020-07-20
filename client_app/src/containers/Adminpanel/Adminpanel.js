@@ -165,6 +165,7 @@ class Adminpanel extends React.Component {
                                     <TableCell>Login</TableCell>
                                     <TableCell>Bill</TableCell>
                                     <TableCell>Cash</TableCell> 
+                                    <TableCell colSpan="2">Functions</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
