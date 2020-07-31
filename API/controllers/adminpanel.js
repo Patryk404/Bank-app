@@ -1,5 +1,6 @@
 const Admin = require('../models/admin');
 const User = require('../models/user');
+const historyTransfers = require('../models/history-of-transfers');
 const bcrypt = require('bcrypt');
 
 module.exports.create_admin = async (req,res,next) =>{

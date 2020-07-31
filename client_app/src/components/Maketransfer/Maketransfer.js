@@ -2,7 +2,6 @@ import React from 'react';
 import Button from '../UI/Button/Button';
 import classes from './Maketransfer.module.css';
 import Input from '@material-ui/core/Input';
-import {useEffect} from 'react';
 import Spinner from '../UI/Spinner/Spinner';
 const MakeTransfer = (props)=>{
     if (props.loading === true){

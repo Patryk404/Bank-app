@@ -33,7 +33,7 @@ app.use((error,req,res,next)=>{//error handling
   });
 });
 
-user.hasMany(historytransfers);//relations between user and history of transfer model 
+user.hasMany(historytransfers,{onDelete: 'CASCADE'});//relations between user and history of transfer model 
 historytransfers.belongsTo(user); 
 
 sequelize//our database connect
