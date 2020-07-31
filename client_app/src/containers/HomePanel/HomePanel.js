@@ -100,6 +100,7 @@ class Userpanel extends Component { // UserPanel component which is containter
                 logged: true,
                 loading: false
             });
+            this.props.history.push({pathname: '/userpanel'});
 
         })
         .catch(err=>{//if we passed wrong informations we setting error
@@ -109,31 +110,9 @@ class Userpanel extends Component { // UserPanel component which is containter
             });
         })
     }
-    toPanelHandler = ()=>{
-        this.props.history.push({pathname: '/userpanel'});
-    }
     render(){
-        let userPanel;//variable to take our panel
-        if (this.state.logged === true)//if we logged we rendering special modal to take a customer into panel when we after a click on button refresh page
-        {
-            userPanel = (<Aux>
-                <Layout>
-                          <div style={{fontSize: "30px"}}>
-                                Hi welcome in our bank!
-                                <br/>
-                                Come on look at your money!
-                            </div>
-                <Button click={this.loginButtonHandler}>Login</Button>
-                <Modal clickonbackdrop={this.loginButtonHandler}>
-                    <p>Succesfully logged into bank</p>
-                    <Button click={this.toPanelHandler}>TAKE ME TO PANEL</Button>
-                </Modal>
-                </Layout>
-            </Aux>);
-        } 
-        else
-    {
-        userPanel = (<Aux>
+        return (
+        <Aux>
             <Layout>
                       <div style={{fontSize: "30px"}}>
             Hi welcome in our bank!
@@ -154,10 +133,7 @@ class Userpanel extends Component { // UserPanel component which is containter
                 }
             </Modal>
             </Layout>
-        </Aux>);
-        }
-        return(//simply returning this variable
-            userPanel
+        </Aux>
         );
     }
 }

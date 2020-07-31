@@ -5,9 +5,6 @@ import Input from '@material-ui/core/Input';
 import {useEffect} from 'react';
 import Spinner from '../UI/Spinner/Spinner';
 const MakeTransfer = (props)=>{
-    useEffect(()=>{
-        console.log('update');
-    })
     if (props.loading === true){
         return (
             <Spinner/>
