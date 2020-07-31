@@ -1,15 +1,16 @@
 import UserPanel from './UserPanel';
-import HistoryTransfers from '../Userpanel/HistoryTransfers/HistoryTransfers';
+import HistoryTransfers from '../../components/HistoryTransfers/HistoryTransfers';
 import React from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Layout from '../../hoc/Layout/Layout';
-import Informations from '../../components/Userpanel/Informations/Informations';
-import MakeTransfer from './Maketransfer/Maketransfer';
+import Informations from '../../components/Informations/Informations';
+import MakeTransfer from '../../components/Maketransfer/Maketransfer';
 
 import {configure,shallow} from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import renderer from 'react-test-renderer';
-import Modal from '../UI/Modal/Modal';
+import Modal from '../../components/UI/Modal/Modal';
+import Button from '../../components/UI/Button/Button';
 
 configure({adapter: new Adapter});
 
@@ -39,9 +40,12 @@ describe('<UserPanel />',()=>{
         //wrapper.instance().makeTransferButtonHandler();
         expect(wrapper.find(Modal)).toHaveLength(1);
     })
-    it('should not render modal if we not click on button make_transfer',()=>{
-        wrapper.setState({showMakeTransfer: false});
-        expect(wrapper.find(Modal)).toHaveLength(0); 
+    it('should render a make_transfer modal if we click on button',()=>{
+        const button = wrapper.find(Button).at(1).children();
+        const our_button_component = wrapper.find(Button).at(1);
+        expect(button.text()).toEqual('Make Transfer');
+        our_button_component.simulate('click');
+        expect(wrapper.find(MakeTransfer)).toHaveLength(1);
     })
     it('should render <Aux> component',()=>{
         expect(wrapper.find(Aux)).toHaveLength(1);
@@ -51,9 +55,6 @@ describe('<UserPanel />',()=>{
     })
     it('should render <Informations> component',()=>{
         expect(wrapper.find(Informations)).toHaveLength(1);
-    })
-    it('should not render <MakeTransfer> component',()=>{
-        expect(wrapper.find(MakeTransfer)).toHaveLength(0);
     })
     it('should render <MakeTransfer> component if stateshowMakeTransfer is true',()=>
     {

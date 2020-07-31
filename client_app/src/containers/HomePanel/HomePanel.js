@@ -124,7 +124,7 @@ class Userpanel extends Component { // UserPanel component which is containter
                                 Come on look at your money!
                             </div>
                 <Button click={this.loginButtonHandler}>Login</Button>
-                <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
+                <Modal clickonbackdrop={this.loginButtonHandler}>
                     <p>Succesfully logged into bank</p>
                     <Button click={this.toPanelHandler}>TAKE ME TO PANEL</Button>
                 </Modal>
@@ -143,7 +143,7 @@ class Userpanel extends Component { // UserPanel component which is containter
             <Button click={this.loginButtonHandler}>Log in</Button>
             <Modal show={this.state.showlogin} clickonbackdrop={this.loginButtonHandler}>
             {
-                this.state.loading ? <Spinner home/> : this.state.error ? <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={'Something went wrong sorry :('}/> : <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>                
+                 this.state.loading ? <Spinner home/> : this.state.error ? <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} error={'Something went wrong sorry :('}/> : <Login user={this.state.user} submit={this.submitLoginHandler} change={this.handleChangeLogin} message={this.state.message}/>                
             }
             </Modal>
             <Button click={this.signupButtonHandler}>Register</Button>

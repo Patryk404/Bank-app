@@ -25,10 +25,6 @@ describe('<SignUp/>',()=>{
         expect(wrapper).toMatchSnapshot();
     })
 
-    it('should render a form if we have no message from props',()=>{
-        expect(wrapper.find('input')).toHaveLength(5);
-    });
-
     it('should render a message if we click into button',()=>{
         wrapper.setProps({
             message: 'example'

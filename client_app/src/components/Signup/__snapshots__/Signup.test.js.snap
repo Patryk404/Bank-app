@@ -4,46 +4,86 @@ exports[`<SignUp/> matches snapshot 1`] = `
 <div
   className="Signup"
 >
-  <label>
-    Mail:
+  <div
+    className="MuiInputBase-root MuiInput-root MuiInput-underline"
+    onClick={[Function]}
+  >
     <input
+      className="MuiInputBase-input MuiInput-input"
       name="email"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Email"
       type="text"
       value=""
     />
-  </label>
-  <label>
-    Name:
+  </div>
+  <div
+    className="MuiInputBase-root MuiInput-root MuiInput-underline"
+    onClick={[Function]}
+  >
     <input
+      className="MuiInputBase-input MuiInput-input"
       name="name"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Name"
       type="text"
       value=""
     />
-  </label>
-  <label>
-    Surname:
+  </div>
+  <div
+    className="MuiInputBase-root MuiInput-root MuiInput-underline"
+    onClick={[Function]}
+  >
     <input
+      className="MuiInputBase-input MuiInput-input"
       name="surname"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Surname"
       type="text"
       value=""
     />
-  </label>
-  <label>
-    Login:
+  </div>
+  <div
+    className="MuiInputBase-root MuiInput-root MuiInput-underline"
+    onClick={[Function]}
+  >
     <input
+      className="MuiInputBase-input MuiInput-input"
       name="login"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Login"
       type="text"
       value=""
     />
-  </label>
-  <label>
-    Password:
+  </div>
+  <div
+    className="MuiInputBase-root MuiInput-root MuiInput-underline"
+    onClick={[Function]}
+  >
     <input
+      className="MuiInputBase-input MuiInput-input"
       name="password"
+      onAnimationStart={[Function]}
+      onBlur={[Function]}
+      onChange={[Function]}
+      onFocus={[Function]}
+      placeholder="Password"
       type="password"
       value=""
     />
-  </label>
+  </div>
   <button
     className="Button"
   >

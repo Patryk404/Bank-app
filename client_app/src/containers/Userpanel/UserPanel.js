@@ -8,6 +8,7 @@ import Informations from '../../components/Informations/Informations';
 import Layout from '../../hoc/Layout/Layout';
 import axios from 'axios';
 import classes from './UserPanel.module.css';
+import {CSSTransition} from 'react-transition-group'
 
 
 class Userpanel extends Component {
@@ -169,9 +170,11 @@ class Userpanel extends Component {
                         <div >
                         <Button styled={'red'} click={this.logoutButtonHandler}>Log Out</Button>
                         <Button click={this.makeTransferButtonHandler} >Make Transfer</Button>
-                        <Modal show={this.state.showMakeTransfer} clickonbackdrop={this.makeTransferButtonHandler}>
-                            <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer} loading={this.state.loading}/>
-                        </Modal> 
+                        <CSSTransition in={this.state.showMakeTransfer} timeout={300} classNames={classes.Modal} mountOnEnter unmountOnExit>
+                            <Modal clickonbackdrop={this.makeTransferButtonHandler}>
+                                <MakeTransfer error={this.state.error_while_transfer} bill={this.state.bill_to_transfer} cash={this.state.cash_to_transfer} change={this.handleChangePanel} submit={this.submitTransferButtonHandler} validate={this.validateBill} message={this.state.message_after_transfer} making_transfer={this.state.making_transfer} loading={this.state.loading}/>
+                            </Modal> 
+                        </CSSTransition>
                         </div>
                         <HistoryTransfers history={this.state.loggedUser.transfers}/>
                         <Informations user={this.state.loggedUser}/>
