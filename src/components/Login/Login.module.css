@@ -1,0 +1,17 @@
+.Login{ 
+    text-align: center;
+    margin: auto;
+    width: 40%;
+    display: block;
+}
+.Login Button { 
+    width: unset;
+    background-color: red;
+}
+
+@media (max-width: 600px){
+    .Login Input {
+        width: 100%;
+        resize: vertical;
+    }
+}
