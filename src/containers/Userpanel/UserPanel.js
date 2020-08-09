@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
+import openSocket from 'socket.io-client';
 import MakeTransfer from '../../components/Maketransfer/Maketransfer';
 import HistoryTransfers from '../../components/HistoryTransfers/HistoryTransfers';
 import Informations from '../../components/Informations/Informations';
@@ -43,7 +44,7 @@ class Userpanel extends Component {
                     }//return object and giving it into array
                 })
                 const user = {...this.state.loggedUser};
-                console.log(history2.cash);
+                //console.log(history2.cash);
                 this.setState(prevState=>({
                     loggedUser: {
                         transfers: history2,
@@ -61,6 +62,25 @@ class Userpanel extends Component {
         }
     }
     componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
+        const socket = openSocket('https://bank-app-github.herokuapp.com/localhost:8000');
+        socket.on('make_transfer', data=>{
+            if(data.bill === this.state.loggedUser.bill) // update only that user with this bill 
+            {
+                console.log(data);
+                const transferss = [...this.state.loggedUser.transfers]; //fix bug
+                transferss.unshift({
+                    cash: data.cash,
+                    date: data.date
+                });
+                this.setState(prevState=>{ return {
+                    loggedUser: {
+                        ...prevState.loggedUser,
+                        transfers: transferss,
+                        cash: parseInt(prevState.loggedUser.cash) + parseInt(data.cash)
+                    }
+                }});
+            }
+        });
         if (this.state.loggedUser.transfers.length === 0 && localStorage.token)// avoiding unneccessary mounting
         {
             axios.get('https://bank-app-github.herokuapp.com/user/history',{headers:{//functions is the same like up 
@@ -85,7 +105,7 @@ class Userpanel extends Component {
                 }})
                 .then(response=>{
                     const data = response.data;
-                    const transfers = [...this.state.loggedUser.transfers]
+                    const transfers = [...this.state.loggedUser.transfers];
                     this.setState({
                         loggedUser: {
                             transfers: transfers,

@@ -9,6 +9,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
+import classes from './HomePanel.module.css';
 
 class Userpanel extends Component { // UserPanel component which is containter 
     state = { // state 
@@ -132,6 +133,11 @@ class Userpanel extends Component { // UserPanel component which is containter
 
                 }
             </Modal>
+            <p className={classes.p}>
+                Did you find bug?
+                <br/>
+                Call Me <a href="mailto:patryk744@op.pl">patryk744@op.pl</a> 
+            </p>
             </Layout>
         </Aux>
         );
