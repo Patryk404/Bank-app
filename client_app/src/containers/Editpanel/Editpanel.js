@@ -19,7 +19,7 @@ class EditPanel extends Component {
     };
     componentDidMount(){
         this.setState({loading:true});
-        axios.get('http://localhost:3000/admin/user/'+this.props.match.params.id,{headers:{
+        axios.get('https://bank-app-github.herokuapp.com/admin/user/'+this.props.match.params.id,{headers:{
             'Content-Type': 'application/json',
             "Authorization": 'Bearer '+localStorage.token
         }}).then(response =>{
@@ -45,7 +45,7 @@ class EditPanel extends Component {
 
     editUserButtonHandler = ()=>{
         this.setState({loading: true});
-        axios.put('http://localhost:3000/admin/user/edit/'+this.props.match.params.id,{
+        axios.put('https://bank-app-github.herokuapp.com/admin/user/edit/'+this.props.match.params.id,{
             name: this.state.name,
             surname: this.state.surname,
             login: this.state.login,

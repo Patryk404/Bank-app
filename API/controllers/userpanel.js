@@ -1,5 +1,4 @@
 const User = require('../models/user');
-const HistoryTransfers = require('../models/history-of-transfers');
 module.exports.make_transfer = async (req,res,next)=>{
     const cash = parseInt(req.body.cash);//parsing to int 
     const bill_to_transfer = req.body.bill;
@@ -40,6 +39,8 @@ module.exports.make_transfer = async (req,res,next)=>{
     });
     await user_to_transfer_money.save();//saving all to database
     await user.save();
+    const io = require('../utils/socket').getIo();
+    io.emit('make_transfer', {date: datee,cash: '+'+cash.toString(),bill: bill_to_transfer});
     res.status(200).json({//returning json with succesfull message
         message: 'Succesfully make a transfer. Have a nice day!'
     });
@@ -52,7 +53,7 @@ module.exports.get_history = async (req,res,next)=>{
     ]});//this is also auto generate function from our relation sequelize. This getting history of transfers from appropriate user
     const transfers = history.map((historytrans,index)=>{//mapping and giving appropriate data to array
         return {date: historytrans.dataValues.dates, cash: historytrans.dataValues.cash};
-    });
+    }); 
     res.status(200).json({//returning this transfers
         transfers: transfers
     });

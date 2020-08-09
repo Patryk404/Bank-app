@@ -7,6 +7,9 @@ const sequelize = require('./utils/database');
 const authRoute = require('./routes/auth.js');
 const userpanelRoute = require('./routes/userpanel');
 const adminpanelRoute = require('./routes/admin');
+const helmet = require('helmet');
+
+app.use(helmet());
 app.use(bodyParser.json());//this must be if we want to work for json's files 
 app.use((req, res, next) => {//cors policy
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -39,6 +42,10 @@ historytransfers.belongsTo(user);
 sequelize//our database connect
 .sync()
 .then(()=>{
-    app.listen(3000);
+    const server = app.listen(8000); // add process.env.PORT
+    const socket = require('./utils/socket').init(server);
+    socket.on('connect',socket=>{
+      console.log('connected');
+    });
 })
 

@@ -58,7 +58,7 @@ class Userpanel extends Component { // UserPanel component which is containter
     };
     submitSignupHandler = () =>{ //submit our signup
         this.setState({loading: true});
-        axios.post('http://localhost:3000/signup',this.state.register_user)//passing our body which represents this.state.register_user
+        axios.post('https://bank-app-github.herokuapp.com/signup',this.state.register_user)//passing our body which represents this.state.register_user
         .then(response=>{//setting state to default if we register user
             this.setState({
                 message: response.data.message,
@@ -89,7 +89,7 @@ class Userpanel extends Component { // UserPanel component which is containter
     }
     submitLoginHandler = ()=>{// sending post request to login into system
         this.setState({loading: true});
-        axios.post('http://localhost:3000/login',this.state.user)
+        axios.post('https://bank-app-github.herokuapp.com/login',this.state.user)
         .then(response=>{
             localStorage.token = response.data.token;//seting token in our app storage
             if(response.data.meta){//if we have metadata for admin we can see admin panel

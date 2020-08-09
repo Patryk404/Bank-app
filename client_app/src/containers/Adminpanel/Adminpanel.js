@@ -29,7 +29,7 @@ class Adminpanel extends React.Component {
         }
     };
     componentDidMount(){
-        axios.get('http://localhost:3000/admin/users',{headers:{
+        axios.get('https://bank-app-github.herokuapp.com/admin/users',{headers:{
             "Authorization": 'Bearer '+localStorage.token
         }})
         .then(response=>{
@@ -50,7 +50,7 @@ class Adminpanel extends React.Component {
         this.setState({
             loading:true
         });
-        axios.post('http://localhost:3000/admin/new_admin',{
+        axios.post('https://bank-app-github.herokuapp.com/admin/new_admin',{
             email: this.state.new_admin.email, 
             login: this.state.new_admin.login,
             password: this.state.new_admin.password
@@ -90,11 +90,11 @@ class Adminpanel extends React.Component {
     }
 
     deleteButtonHandler = id =>{
-        axios.delete('http://localhost:3000/admin/user/'+id,{headers:{
+        axios.delete('https://bank-app-github.herokuapp.com/admin/user/'+id,{headers:{
             'Content-Type': 'application/json',
             "Authorization": 'Bearer '+localStorage.token
         }}).then(response=>{
-            return axios.get('http://localhost:3000/admin/users',{headers:{
+            return axios.get('https://bank-app-github.herokuapp.com/admin/users',{headers:{
                 "Authorization": 'Bearer '+localStorage.token
             }});
         }).then(response=>{

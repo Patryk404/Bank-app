@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import Aux from '../../hoc/Auxiliary/Auxiliary';
 import Button from '../../components/UI/Button/Button';
 import Modal from '../../components/UI/Modal/Modal';
+import openSocket from 'socket.io-client';
 import MakeTransfer from '../../components/Maketransfer/Maketransfer';
 import HistoryTransfers from '../../components/HistoryTransfers/HistoryTransfers';
 import Informations from '../../components/Informations/Informations';
@@ -30,7 +31,7 @@ class Userpanel extends Component {
     componentDidUpdate(){
         if (this.state.showMakeTransfer===true && this.state.making_transfer===true  && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
         {
-            axios.get('http://localhost:3000/user/history',{headers:{//geting history of transfer from specific user
+            axios.get('http://localhost:8000/user/history',{headers:{//geting history of transfer from specific user
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
@@ -43,7 +44,7 @@ class Userpanel extends Component {
                     }//return object and giving it into array
                 })
                 const user = {...this.state.loggedUser};
-                console.log(history2.cash);
+                //console.log(history2.cash);
                 this.setState(prevState=>({
                     loggedUser: {
                         transfers: history2,
@@ -61,9 +62,28 @@ class Userpanel extends Component {
         }
     }
     componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
+        const socket = openSocket('http://localhost:8000');
+        socket.on('make_transfer', data=>{
+            if(data.bill === this.state.loggedUser.bill) // update only that user with this bill 
+            {
+                console.log(data);
+                const transferss = [...this.state.loggedUser.transfers]; //fix bug
+                transferss.unshift({
+                    cash: data.cash,
+                    date: data.date
+                });
+                this.setState(prevState=>{ return {
+                    loggedUser: {
+                        ...prevState.loggedUser,
+                        transfers: transferss,
+                        cash: parseInt(prevState.loggedUser.cash) + parseInt(data.cash)
+                    }
+                }});
+            }
+        });
         if (this.state.loggedUser.transfers.length === 0 && localStorage.token)// avoiding unneccessary mounting
         {
-            axios.get('http://localhost:3000/user/history',{headers:{//functions is the same like up 
+            axios.get('http://localhost:8000/user/history',{headers:{//functions is the same like up 
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
@@ -80,12 +100,12 @@ class Userpanel extends Component {
                         transfers: history2
                     }
                 });
-                axios.get('http://localhost:3000/user',{headers:{
+                axios.get('http://localhost:8000/user',{headers:{
                     "Authorization": 'Bearer '+localStorage.token
                 }})
                 .then(response=>{
                     const data = response.data;
-                    const transfers = [...this.state.loggedUser.transfers]
+                    const transfers = [...this.state.loggedUser.transfers];
                     this.setState({
                         loggedUser: {
                             transfers: transfers,
@@ -138,7 +158,7 @@ class Userpanel extends Component {
             making_transfer: true,
             loading: true
         });
-        axios.post('http://localhost:3000/user/transfer',{
+        axios.post('http://localhost:8000/user/transfer',{
             bill: this.state.bill_to_transfer,//post body
             cash: this.state.cash_to_transfer
         },{headers: {"Authorization": 'Bearer '+localStorage.token,// our token to authentication
