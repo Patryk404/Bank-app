@@ -62,7 +62,7 @@ class Userpanel extends Component {
         }
     }
     componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
-        const socket = openSocket('https://bank-app-github.herokuapp.com/localhost:8000');
+        const socket = openSocket('https://bank-app-github.herokuapp.com');
         socket.on('make_transfer', data=>{
             if(data.bill === this.state.loggedUser.bill) // update only that user with this bill 
             {
