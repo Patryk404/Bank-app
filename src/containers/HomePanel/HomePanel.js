@@ -133,7 +133,7 @@ class Userpanel extends Component { // UserPanel component which is containter
 
                 }
             </Modal>
-            <p className={classes.p}>
+            <p className={classes.paragraph}>
                 Did you find bug?
                 <br/>
                 Call Me <a href="mailto:patryk744@op.pl">patryk744@op.pl</a> 
