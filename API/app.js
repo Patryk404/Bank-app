@@ -42,7 +42,7 @@ historytransfers.belongsTo(user);
 sequelize//our database connect
 .sync()
 .then(()=>{
-    const server = app.listen(8000); // add process.env.PORT
+    const server = app.listen(process.env.PORT||3000);
     const socket = require('./utils/socket').init(server);
     socket.on('connect',socket=>{
       console.log('connected');

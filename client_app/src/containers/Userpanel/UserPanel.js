@@ -31,7 +31,7 @@ class Userpanel extends Component {
     componentDidUpdate(){
         if (this.state.showMakeTransfer===true && this.state.making_transfer===true  && this.state.message_after_transfer!=='') //update one time avoiding infinite loop
         {
-            axios.get('http://localhost:8000/user/history',{headers:{//geting history of transfer from specific user
+            axios.get('https://bank-app-github.herokuapp.com/user/history',{headers:{//geting history of transfer from specific user
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
@@ -62,7 +62,7 @@ class Userpanel extends Component {
         }
     }
     componentDidMount(){//if we go to next panel components historytransfer and information_user mounting and fetching data
-        const socket = openSocket('http://localhost:8000');
+        const socket = openSocket('https://bank-app-github.herokuapp.com');
         socket.on('make_transfer', data=>{
             if(data.bill === this.state.loggedUser.bill) // update only that user with this bill 
             {
@@ -83,7 +83,7 @@ class Userpanel extends Component {
         });
         if (this.state.loggedUser.transfers.length === 0 && localStorage.token)// avoiding unneccessary mounting
         {
-            axios.get('http://localhost:8000/user/history',{headers:{//functions is the same like up 
+            axios.get('https://bank-app-github.herokuapp.com/user/history',{headers:{//functions is the same like up 
                 "Authorization": 'Bearer '+localStorage.token
             }})
             .then(response=>{
@@ -100,7 +100,7 @@ class Userpanel extends Component {
                         transfers: history2
                     }
                 });
-                axios.get('http://localhost:8000/user',{headers:{
+                axios.get('https://bank-app-github.herokuapp.com/user',{headers:{
                     "Authorization": 'Bearer '+localStorage.token
                 }})
                 .then(response=>{
@@ -158,7 +158,7 @@ class Userpanel extends Component {
             making_transfer: true,
             loading: true
         });
-        axios.post('http://localhost:8000/user/transfer',{
+        axios.post('https://bank-app-github.herokuapp.com/user/transfer',{
             bill: this.state.bill_to_transfer,//post body
             cash: this.state.cash_to_transfer
         },{headers: {"Authorization": 'Bearer '+localStorage.token,// our token to authentication
