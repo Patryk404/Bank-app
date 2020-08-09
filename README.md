@@ -9,5 +9,9 @@ Copy the repository and run `npm install` in two folders `API` and `client_app`.
 In first go to the `API` folder and run `npm start`. 
 Next go to the `client_app`and run`npm start`.
 
+## Ready App
+[Deployed app](https://bank-app-github-react.herokuapp.com/)
+
 ## Authors
 Patryk Kurek
+
