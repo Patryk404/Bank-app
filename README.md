@@ -25,8 +25,8 @@ If you want use admin panel type admin in all login fields.
 Patryk Kurek
 
 ## Screenshots
-![1]("https://raw.githubusercontent.com/Patryk404/Bank-app/master/screenshots/1.PNG")
-![2]("https://raw.githubusercontent.com/Patryk404/Bank-app/master/screenshots/2.PNG")
-![3]("https://raw.githubusercontent.com/Patryk404/Bank-app/master/screenshots/3.PNG")
-![4]("https://raw.githubusercontent.com/Patryk404/Bank-app/master/screenshots/4.PNG")
-![5]("https://raw.githubusercontent.com/Patryk404/Bank-app/master/screenshots/5.PNG")
+![1]("https://github.com/Patryk404/Bank-app/blob/master/screenshots/1.png?raw=true")
+![2]("https://github.com/Patryk404/Bank-app/blob/master/screenshots/2.png?raw=true")
+![3]("https://github.com/Patryk404/Bank-app/blob/master/screenshots/3.png?raw=true")
+![4]("https://github.com/Patryk404/Bank-app/blob/master/screenshots/4.png?raw=true")
+![5]("https://github.com/Patryk404/Bank-app/blob/master/screenshots/5.png?raw=true")
