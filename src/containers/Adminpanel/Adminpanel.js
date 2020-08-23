@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{Component} from 'react';
 import Button from '../../components/UI/test_button_materialUI/Button'; 
 import Buttonlogout from '../../components/UI/Button/Button';
 import classes from './Adminpanel.module.css';
@@ -16,7 +16,7 @@ import Spinner from '../../components/UI/Spinner/Spinner';
 import {connect} from 'react-redux'; 
 import * as actions from '../../store/actions/index';
 
-class Adminpanel extends React.Component {
+class Adminpanel extends Component {
     state = {
         users: [],
         modal_show: false,
@@ -46,6 +46,7 @@ class Adminpanel extends React.Component {
             modal_show: !prevstate.modal_show
         }));
     }
+    
     submit_new_admin=()=>{
         this.setState({
             loading:true
@@ -74,6 +75,7 @@ class Adminpanel extends React.Component {
             this.setState({loading: false});
         })
     }
+    
     handleChange = event=>{
         this.setState({
             new_admin:{
