@@ -1,0 +1,29 @@
+.Transfers {
+    height: 60%; /* 100% Full-height */
+    width: 20%; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    top: 150px; /* Stay at the top */
+    left: 40px;
+    background-color: #58eddc;
+    border-radius: 10px;
+    overflow-y: auto; /* Disable horizontal scroll */
+    padding-top: 15px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+    list-style-type: none;
+    text-align: center;
+}
+.Transfers ul{
+    display: inline;
+}
+
+@media (max-width: 600px){
+    .Transfers {
+        position: relative;
+        margin: auto;
+        top: 0px;
+        left: 0;
+        height: 350px;
+        width: 80%;
+        overflow: auto;
+    }
+}
