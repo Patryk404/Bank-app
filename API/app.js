@@ -12,7 +12,7 @@ const helmet = require('helmet');
 app.use(helmet());
 app.use(bodyParser.json());//this must be if we want to work for json's files 
 app.use((req, res, next) => {//cors policy
-    res.setHeader('Access-Control-Allow-Origin', 'https://bank-app-github-react.herokuapp.com');
+    res.setHeader('Access-Control-Allow-Origin', '*'); //https://bank-app-github-react.herokuapp.com *-> during development
     res.setHeader(
       'Access-Control-Allow-Methods',
       'OPTIONS, GET, POST, PUT, PATCH, DELETE'

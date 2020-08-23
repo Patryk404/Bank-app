@@ -6,6 +6,7 @@ import axios from 'axios';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import back from '../../assets/images/back.png';
 import { Button } from '@material-ui/core';
+import {URL} from '../../ApiUrl';
 
 class EditPanel extends Component {
     state = {
@@ -19,7 +20,7 @@ class EditPanel extends Component {
     };
     componentDidMount(){
         this.setState({loading:true});
-        axios.get('https://bank-app-github.herokuapp.com/admin/user/'+this.props.match.params.id,{headers:{
+        axios.get(URL + '/admin/user/'+this.props.match.params.id,{headers:{
             'Content-Type': 'application/json',
             "Authorization": 'Bearer '+localStorage.token
         }}).then(response =>{
@@ -45,7 +46,7 @@ class EditPanel extends Component {
 
     editUserButtonHandler = ()=>{
         this.setState({loading: true});
-        axios.put('https://bank-app-github.herokuapp.com/admin/user/edit/'+this.props.match.params.id,{
+        axios.put(URL+'/admin/user/edit/'+this.props.match.params.id,{
             name: this.state.name,
             surname: this.state.surname,
             login: this.state.login,
@@ -120,9 +121,7 @@ class EditPanel extends Component {
                     <label>Bill</label>
                     </div>
                     <div style={{
-                        width: '250px',
-                        textAlign: 'center',
-                        margin: 'auto'
+                        width: 'auto'
                     }}>
                     <Input onKeyPress={this.validateBill} onChange={this.inputHandler} name="bill" type="text" placeholder="Bill" value={this.state.bill} fullWidth/>
                     </div>

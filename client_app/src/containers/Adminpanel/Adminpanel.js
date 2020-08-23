@@ -1,5 +1,5 @@
 import React,{Component} from 'react';
-import Button from '../../components/UI/test_button_materialUI/Button'; 
+import Button from '../../components/UI/Button_MaterialUi/Button'; 
 import Buttonlogout from '../../components/UI/Button/Button';
 import classes from './Adminpanel.module.css';
 import Layout from '../../hoc/Layout/Layout';
@@ -15,6 +15,7 @@ import Input from '@material-ui/core/Input';
 import Spinner from '../../components/UI/Spinner/Spinner';
 import {connect} from 'react-redux'; 
 import * as actions from '../../store/actions/index';
+import {URL} from '../../ApiUrl';
 
 class Adminpanel extends Component {
     state = {
@@ -29,7 +30,7 @@ class Adminpanel extends Component {
         }
     };
     componentDidMount(){
-        axios.get('https://bank-app-github.herokuapp.com/admin/users',{headers:{
+        axios.get(URL+'/admin/users',{headers:{
             "Authorization": 'Bearer '+localStorage.token
         }})
         .then(response=>{
@@ -51,7 +52,7 @@ class Adminpanel extends Component {
         this.setState({
             loading:true
         });
-        axios.post('https://bank-app-github.herokuapp.com/admin/new_admin',{
+        axios.post(URL + '/admin/new_admin',{
             email: this.state.new_admin.email, 
             login: this.state.new_admin.login,
             password: this.state.new_admin.password
@@ -92,11 +93,11 @@ class Adminpanel extends Component {
     }
 
     deleteButtonHandler = id =>{
-        axios.delete('https://bank-app-github.herokuapp.com/admin/user/'+id,{headers:{
+        axios.delete(URL+'/admin/user/'+id,{headers:{
             'Content-Type': 'application/json',
             "Authorization": 'Bearer '+localStorage.token
         }}).then(response=>{
-            return axios.get('https://bank-app-github.herokuapp.com/admin/users',{headers:{
+            return axios.get(URL+'/admin/users',{headers:{
                 "Authorization": 'Bearer '+localStorage.token
             }});
         }).then(response=>{
@@ -157,7 +158,9 @@ class Adminpanel extends Component {
                     </Modal>
                     <br/>
                     <Box className={classes.Box}>
-                        <Table className={classes.table} aria-label="simple table">
+                        <Table classes={{
+                            root: classes.table
+                        }} aria-label="simple table">
                             <TableHead>
                                 <TableRow>
                                     <TableCell>ID</TableCell>
