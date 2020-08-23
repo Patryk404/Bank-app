@@ -11,7 +11,7 @@ import {connect} from 'react-redux';
 import * as actions from '../../store/actions/index';
 import classes from './HomePanel.module.css';
 
-class HomePanel extends Component { // UserPanel component which is containter 
+class Userpanel extends Component { // UserPanel component which is containter 
     state = { // state 
         showlogin: false,//to show login modal
         showsignup: false,//to show signup modal
@@ -150,6 +150,6 @@ const mapDispatchToProps = dispatch =>{
     }
 }
 
-export default connect(null,mapDispatchToProps)(HomePanel);
+export default connect(null,mapDispatchToProps)(Userpanel);
 
 //This code required refactoring we might create new container component if we logged into system. Not

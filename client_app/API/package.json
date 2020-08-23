@@ -1,0 +1,26 @@
+{
+  "name": "bank-project-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Patryk Kurek",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.5.0",
+    "helmet": "^3.23.3",
+    "jsonwebtoken": "^8.5.1",
+    "nodemon": "^2.0.4",
+    "pg": "^8.2.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.12",
+    "socket.io": "^2.3.0"
+  }
+}

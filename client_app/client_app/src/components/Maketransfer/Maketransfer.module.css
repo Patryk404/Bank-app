@@ -1,0 +1,17 @@
+.Maketransfer {
+    text-align: center;
+    width: 40%;
+    display: inline-block;
+}
+
+.Maketransfer Button {
+    width: unset;
+}
+
+
+@media (max-width: 600px){
+    .Maketransfer input{
+    width: 100%;
+    resize: vertical;
+    }
+}
